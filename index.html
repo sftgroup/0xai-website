@@ -468,8 +468,8 @@
         </div>
         <a href="#contact" class="nav-cta"><span class="lang-zh">联系我们</span><span class="lang-en">Contact</span></a>
         <div class="lang-toggle-btn">
-            <button id="lang-zh-btn" class="active">中文</button>
-            <button id="lang-en-btn">EN</button>
+            <button id="lang-zh-btn" class="active" onclick="switchLang('zh')">中文</button>
+            <button id="lang-en-btn" onclick="switchLang('en')">EN</button>
         </div>
     </div>
     <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')">
@@ -511,6 +511,11 @@
 <section class="section" id="projects">
     <h2 class="section-title"><span class="lang-zh">我们的 <span>产品生态</span></span><span class="lang-en">Our <span>Product Ecosystem</span></span></h2>
     <p class="section-subtitle"><span class="lang-zh">0xAi 致力于 AI 与 Web3 前沿技术研发，从智能电商到去中心化身份协议，打造完整的产品生态</span><span class="lang-en">0xAi is dedicated to cutting-edge AI and Web3 technologies, building a complete product ecosystem from smart e-commerce to decentralized identity protocols.</span></p>
+    <div class="filter-tabs">
+        <button class="filter-btn active" onclick="filterProducts('all')">全部</button>
+        <button class="filter-btn" onclick="filterProducts('ai')">AI</button>
+        <button class="filter-btn" onclick="filterProducts('web3')">Web3</button>
+    </div>
     
     <div class="projects-grid">
         
@@ -772,29 +777,41 @@ window.addEventListener('scroll', () => {
 
 
 <script>
-document.addEventListener('click', function(e) {
-    if (e.target && e.target.id === 'lang-zh-btn') {
-        document.documentElement.classList.remove('en-mode');
-        document.getElementById('lang-zh-btn').classList.add('active');
-        document.getElementById('lang-en-btn').classList.remove('active');
-        localStorage.setItem('lang', 'zh');
-    }
-    if (e.target && e.target.id === 'lang-en-btn') {
-        document.documentElement.classList.add('en-mode');
-        document.getElementById('lang-en-btn').classList.add('active');
-        document.getElementById('lang-zh-btn').classList.remove('active');
-        localStorage.setItem('lang', 'en');
-    }
-});
-(function() {
-    if (localStorage.getItem('lang') === 'en') {
-        document.documentElement.classList.add('en-mode');
-        var eb = document.getElementById('lang-en-btn');
-        var zb = document.getElementById('lang-zh-btn');
-        if (eb) eb.classList.add('active');
+
+
+
+<script>
+function switchLang(lang) {
+    var h = document.documentElement;
+    var zb = document.getElementById('lang-zh-btn');
+    var eb = document.getElementById('lang-en-btn');
+    if (lang === 'en') {
+        h.classList.add('en-mode');
         if (zb) zb.classList.remove('active');
+        if (eb) eb.classList.add('active');
+    } else {
+        h.classList.remove('en-mode');
+        if (zb) zb.classList.add('active');
+        if (eb) eb.classList.remove('active');
     }
-})();
+    localStorage.setItem('0xai-lang', lang);
+}
+if (localStorage.getItem('0xai-lang') === 'en') { switchLang('en'); }
+</script>
+
+
+<script>
+function filterProducts(f) {
+    var cards = document.querySelectorAll('.project-card');
+    var btns = document.querySelectorAll('.filter-btn');
+    btns.forEach(function(b) { b.classList.remove('active'); });
+    btns.forEach(function(b) { if (b.textContent.trim().toLowerCase() === f || (f === 'all' && b.textContent.trim() === '全部')) b.classList.add('active'); });
+    cards.forEach(function(c) {
+        if (f === 'all') c.classList.remove('hidden');
+        else if (f === 'ai') c.classList.contains('ai') ? c.classList.remove('hidden') : c.classList.add('hidden');
+        else if (f === 'web3') c.classList.contains('web3') ? c.classList.remove('hidden') : c.classList.add('hidden');
+    });
+}
 </script>
 
 </body>
