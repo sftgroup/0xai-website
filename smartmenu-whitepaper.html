@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI 智能点餐系统 | 产品白皮书</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0A0A1A;--bg2:#12122A;--card:rgba(18,18,42,0.8);
+  --primary:#6C5CE7;--primary-dark:#5A4BD1;--secondary:#00D2FF;
+  --white:#fff;--txt:#e8edf5;--txt2:#b0c0e0;--txt3:#6a7a9a;
+  --green:#22c55e;--red:#ef4444;--r:16px;--rs:10px;
+  --t:.5s cubic-bezier(.22,1,.36,1);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC',sans-serif
+}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{font-family:var(--font);background:var(--bg);color:var(--txt);line-height:1.6;overflow-x:hidden}
+.lang-zh{display:inline!important}.lang-en{display:none!important}
+[data-lang="zh"]{display:block!important}[data-lang="en"]{display:none!important}
+html.en-mode .lang-zh{display:none!important}html.en-mode .lang-en{display:inline!important}
+html.en-mode [data-lang="zh"]{display:none!important}html.en-mode [data-lang="en"]{display:block!important}
+td.lang-zh,th.lang-zh{display:table-cell!important}td.lang-en,th.lang-en{display:none!important}
+html.en-mode td.lang-zh,html.en-mode th.lang-zh{display:none!important}
+html.en-mode td.lang-en,html.en-mode th.lang-en{display:table-cell!important}
+
+/* 导航 */
+.navbar{position:fixed;top:56px;left:0;width:100%;height:64px;background:rgba(7,11,23,.88);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:1000;border-bottom:1px solid rgba(255,255,255,.06)}
+.navbar .brand{display:flex;align-items:center;gap:10px;color:var(--white);font-weight:700;font-size:16px}
+.navbar .brand .logo{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;box-shadow:0 0 20px rgba(108,92,231,.3)}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a{color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;padding:6px 11px;border-radius:7px;transition:var(--t);font-weight:500}
+.nav-links a:hover{color:var(--white);background:rgba(255,255,255,.07)}
+.nav-links a.active{color:var(--white);background:rgba(108,92,231,.2);box-shadow:0 0 12px rgba(108,92,231,.1)}
+.nav-right{display:flex;align-items:center;gap:14px}
+.nav-right .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(34,197,94,.5);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.9)}}
+.lang-toggle{display:flex;gap:2px;background:rgba(255,255,255,.06);border-radius:8px;padding:3px}
+.lang-toggle button{background:transparent;border:none;color:rgba(255,255,255,.4);padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:var(--t);font-family:var(--font);white-space:nowrap}
+.lang-toggle button.active{background:var(--primary)!important;color:#fff!important;box-shadow:0 0 16px rgba(108,92,231,.3)}
+.lang-toggle button:hover:not(.active){color:rgba(255,255,255,.7)}
+
+/* 幻灯片通用 */
+.wrapper{margin-top:0}
+.slide{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 32px;position:relative;overflow:hidden}
+.slide-inner{width:100%;max-width:1200px;position:relative;z-index:2}
+.slide::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(108,92,231,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(108,92,231,.03) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(108,92,231,.12);border:1px solid rgba(108,92,231,.2);color:var(--secondary);padding:6px 20px;border-radius:30px;font-size:13px;font-weight:600;letter-spacing:1px;margin-bottom:18px}
+.title{font-size:clamp(30px,4.8vw,50px);font-weight:800;line-height:1.2;margin-bottom:6px;background:linear-gradient(135deg,#fff 50%,#00D2FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{font-size:16px;color:var(--txt2);margin-bottom:36px;font-weight:400}
+
+/* 封面 */
+.slide-cover{background:radial-gradient(ellipse at 30% 20%,#0f1f3d 0%,#070b17 70%);text-align:center}
+.slide-cover::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 50%,rgba(108,92,231,.04) 0%,transparent 60%);animation:glow 30s linear infinite;pointer-events:none;z-index:0}
+@keyframes glow{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+.cover-content{position:relative;z-index:2}
+.cover-badge{display:inline-block;background:rgba(108,92,231,.15);border:1px solid rgba(108,92,231,.25);color:var(--secondary);padding:8px 24px;border-radius:30px;font-size:13px;letter-spacing:2px;margin-bottom:36px;backdrop-filter:blur(4px)}
+.slide-cover h1{font-size:clamp(38px,6.5vw,68px);font-weight:900;line-height:1.15;margin-bottom:14px;background:linear-gradient(135deg,#fff 50%,#00D2FF 85%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 4px 40px rgba(108,92,231,.15))}
+.st{font-size:clamp(15px,2vw,22px);color:rgba(255,255,255,.7);font-weight:300;letter-spacing:4px;margin-bottom:28px}
+.slogan{display:inline-flex;align-items:center;gap:12px;background:rgba(108,92,231,.1);border:2px solid rgba(108,92,231,.3);padding:12px 36px;border-radius:60px;margin-bottom:24px;backdrop-filter:blur(8px);transition:var(--t)}
+.slogan:hover{border-color:var(--primary);box-shadow:0 0 40px rgba(108,92,231,.15)}
+.slogan-text{font-size:18px;font-weight:700;color:var(--secondary);letter-spacing:3px}
+.version{display:flex;justify-content:center;gap:28px;color:rgba(255,255,255,.4);font-size:13px;letter-spacing:1px;flex-wrap:wrap}
+.version span{display:flex;align-items:center;gap:6px}
+.scroll-down{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:rgba(255,255,255,.25);font-size:12px;z-index:2;animation:float 2.5s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+.scroll-down .line{width:1px;height:28px;background:linear-gradient(to bottom,rgba(255,255,255,.3),transparent)}
+
+.devices{display:flex;justify-content:center;gap:20px;margin:30px 0 18px;perspective:1200px;flex-wrap:wrap}
+.device{width:150px;height:200px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:7px;transform:rotateY(-10deg) rotateX(5deg);transition:var(--t);backdrop-filter:blur(4px);overflow:hidden}
+.device:nth-child(2){transform:rotateY(0) rotateX(5deg) translateY(-10px)}
+.device:nth-child(3){transform:rotateY(10deg) rotateX(5deg)}
+.device:hover{transform:rotateY(0) rotateX(0) translateY(-8px);border-color:rgba(108,92,231,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.device-scr{width:100%;height:100%;border-radius:12px;background:linear-gradient(135deg,#0f1f3d,#1a3a6b);display:flex;flex-direction:column;padding:10px 8px;gap:4px}
+.device-scr .bar{height:4px;border-radius:4px;background:rgba(255,255,255,.08)}
+.device-scr .bar.og{background:var(--primary);width:60%}
+.device-scr .bar.w80{width:80%}.device-scr .bar.w50{width:50%}.device-scr .bar.w70{width:70%}.device-scr .bar.w40{width:40%}
+.device-scr .bar.gn{background:var(--green);width:60%}
+.device-scr .bar.rw{display:flex;gap:5px;background:none;height:auto}
+.device-scr .bar.rw span{flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,.06)}
+.device-scr .bar.rw span.on{background:var(--primary)}
+.device-scr .dots{display:flex;gap:4px;justify-content:flex-end}
+.device-scr .dots span{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.1)}
+.device-scr .dots span.on{background:var(--primary)}
+.device-label{font-size:11px;color:rgba(255,255,255,.6);text-align:center;margin-top:5px;letter-spacing:1px;font-weight:500}
+
+.particles{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+.p{position:absolute;width:3px;height:3px;background:rgba(108,92,231,.3);border-radius:50%;animation:float-p linear infinite}
+@keyframes float-p{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1}90%{opacity:.5}100%{transform:translateY(-100vh) scale(1);opacity:0}}
+
+/* ===== 全新 Slide2 痛点卡片布局 ===== */
+.p-grid2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 20px 0;
+  justify-content: center;
+}
+.p-card2 {
+  flex: 1 1 300px;
+  max-width: calc(33.333% - 14px);
+  min-width: 260px;
+  background: var(--card);
+  border-radius: var(--r);
+  padding: 22px;
+  border: 1px solid rgba(255,255,255,.06);
+  backdrop-filter: blur(12px);
+  transition: var(--t);
+  overflow-wrap: break-word;
+  word-break: break-word;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+@media(max-width:768px){
+  .p-grid2 {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .p-card2 {
+    flex: 1 1 100%;
+    max-width: 100%;
+    padding: 16px 14px;
+  }
+}
+.p-card2:hover {
+  border-color: rgba(108,92,231,.15);
+  transform: translateY(-4px);
+}
+@media(max-width:768px){
+  .p-card2:hover {
+    transform: none;
+  }
+}
+.p-card2 .pi2 {
+  font-size: 26px;
+  margin-bottom: 8px;
+}
+.p-card2 h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--txt);
+  margin-bottom: 8px;
+}
+.p-card2 .scene2,
+.p-card2 .sol2 {
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: rgba(255,255,255,.9);
+  margin-bottom: 10px;
+  line-height: 1.7;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+.p-card2 .scene2 {
+  background: rgba(239,68,68,.06);
+  border-left: 3px solid var(--red);
+}
+.p-card2 .sol2 {
+  background: rgba(34,197,94,.06);
+  border-left: 3px solid var(--green);
+}
+.p-card2 .lb2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.p-card2 .lb2:first-child { color: var(--red); }
+.p-card2 .sol2 .lb2 { color: var(--green); }
+.p-card2 .gap2 {
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(239,68,68,.08);
+  color: #f87171;
+  border: 1px solid rgba(239,68,68,.1);
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+/* 桌面英文版下略微缩小字体防止溢出 */
+html.en-mode .p-card2 {
+  font-size: 13px;
+}
+html.en-mode .p-card2 .scene2,
+html.en-mode .p-card2 .sol2,
+html.en-mode .p-card2 .gap2 {
+  font-size: 13px;
+}
+
+/* 旧版卡片布局隐藏（防止冲突） */
+.p-grid{display:none!important}
+
+/* === Slide3 核心引擎 - 加大间距，彻底解决重叠 === */
+.engine-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 18px 0;
+  perspective: 1400px;
+}
+.engine {
+  position: relative;
+  width: 700px;   /* 原580px，增大 */
+  height: 560px;  /* 原480px，增大 */
+}
+@media (max-width: 768px) {
+  .engine {
+    width: 380px;  /* 原320px */
+    height: 500px; /* 原420px */
+  }
+}
+.engine .core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  text-align: center;
+  z-index: 5;
+  line-height: 1.4;
+  padding: 8px;
+}
+.engine .core .ci {
+  font-size: 36px;
+  margin-bottom: 6px;
+  display: block;
+}
+.engine .core .ci + span {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,.85);
+  display: block;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+.enode {
+  position: absolute;
+  width: 155px;
+  padding: 14px 12px;
+  background: var(--card);
+  border-radius: var(--rs);
+  border: 1px solid rgba(255,255,255,.06);
+  backdrop-filter: blur(12px);
+  transition: var(--t);
+  cursor: default;
+  z-index: 3;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  overflow: hidden;  /* 防止溢出 */
+}
+.enode:hover {
+  border-color: rgba(108,92,231,.3);
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 12px 40px rgba(0,0,0,.4);
+  z-index: 10;
+}
+.enode .ni {
+  font-size: 26px;
+  margin-bottom: 5px;
+  display: block;
+}
+.enode .nt {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--txt);
+}
+.enode .nd {
+  font-size: 13px;
+  color: var(--txt2);
+  margin-top: 4px;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+.enode .ntag {
+  display: inline-block;
+  background: rgba(108,92,231,.15);
+  color: var(--secondary);
+  padding: 2px 9px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+/* 调整位置，增大间隔 */
+.enode.e1 {
+  top: -5px;           /* 原 top:0，上移一点 */
+  left: 50%;
+  transform: translateX(-50%);
+}
+.enode.e2 {
+  top: 50%;
+  right: -5px;         /* 原 right:0，右移一点 */
+  transform: translateY(-50%);
+}
+.enode.e3 {
+  bottom: -5px;        /* 原 bottom:0，下移一点 */
+  left: 50%;
+  transform: translateX(-50%);
+}
+.enode.e4 {
+  top: 50%;
+  left: -5px;          /* 原 left:0，左移一点 */
+  transform: translateY(-50%);
+}
+@media (max-width: 768px) {
+  .enode {
+    width: 135px;      /* 原120px，稍微加宽 */
+    padding: 10px 8px;
+  }
+  .enode .ni {
+    font-size: 20px;
+  }
+  .enode .nt {
+    font-size: 12px;
+  }
+  .enode .nd {
+    font-size: 11px;
+  }
+  .enode .ntag {
+    font-size: 10px;
+  }
+  .engine .core {
+    width: 80px;
+    height: 80px;
+    font-size: 10px;
+  }
+  .engine .core .ci {
+    font-size: 26px;
+    margin-bottom: 3px;
+  }
+  .engine .core .ci + span {
+    font-size: 11px;
+  }
+  /* 移动端位置微调 */
+  .enode.e1 { top: 0; left: 50%; }
+  .enode.e2 { right: 0; top: 50%; }
+  .enode.e3 { bottom: 0; left: 50%; }
+  .enode.e4 { left: 0; top: 50%; }
+}
+
+/* Slide4 聊天 */
+.chat-section{display:flex;gap:28px;align-items:stretch;flex-wrap:wrap}
+.chat-section>*{flex:1;min-width:300px}
+.phone-wrap{flex:0 0 330px;max-width:100%}
+.phone{background:#0d0d1a;border-radius:36px;padding:12px;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.06)}
+.screen{background:#111122;border-radius:26px;min-height:580px;display:flex;flex-direction:column;overflow:hidden}
+.chat-h{padding:14px 14px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.chat-h .av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff}
+.chat-h .nm{font-size:14px;font-weight:600;color:var(--txt)}
+.chat-h .st{font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px;font-weight:500}
+.chat-h .st::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green)}
+.msgs{flex:1;padding:14px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;max-height:430px}
+.msg{max-width:88%;padding:9px 12px;border-radius:14px;font-size:14px;line-height:1.5;animation:mi .3s ease}
+@keyframes mi{0%{opacity:0;transform:translateY(8px) scale(.96)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.msg.u{align-self:flex-end;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border-bottom-right-radius:3px}
+.msg.a{align-self:flex-start;background:rgba(255,255,255,.06);color:var(--txt);border-bottom-left-radius:3px;border:1px solid rgba(255,255,255,.04)}
+.msg.a .al{font-size:11px;color:var(--primary);font-weight:600;margin-bottom:3px}
+.msg .dc{background:rgba(255,255,255,.04);border-radius:9px;padding:8px;margin-top:5px;display:flex;justify-content:space-between;align-items:center}
+.msg .dc .dn{font-weight:600;font-size:14px}
+.msg .dc .dp{color:var(--secondary);font-weight:700;font-size:15px}
+.msg .dc .dm{font-size:12px;color:var(--green);font-weight:500}
+.msg .tags{display:flex;gap:3px;flex-wrap:wrap;margin-top:5px}
+.msg .tags .tag{background:rgba(108,92,231,.1);color:var(--secondary);padding:2px 7px;border-radius:10px;font-size:11px;border:1px solid rgba(108,92,231,.1);font-weight:500}
+.msg .ab{display:inline-block;background:var(--primary);color:#fff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;margin-top:5px;cursor:pointer;transition:var(--t);border:none;font-family:var(--font)}
+.msg .ab:hover{background:var(--primary-dark);transform:scale(1.03)}
+.msg .cb{margin-top:5px;padding:8px 10px;background:rgba(34,197,94,.1);border-radius:7px;border:1px solid rgba(34,197,94,.15)}
+.msg .cb .ct{font-weight:600;color:var(--green);font-size:13px}
+.msg .cb .cl{font-size:13px;color:rgba(255,255,255,.75);margin-top:3px}
+.chat-in{display:flex;align-items:center;padding:10px 14px;gap:8px;border-top:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.2)}
+.chat-in input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:7px 14px;color:var(--txt);font-size:14px;outline:none;transition:var(--t);font-family:var(--font)}
+.chat-in input:focus{border-color:var(--primary);box-shadow:0 0 16px rgba(108,92,231,.1)}
+.chat-in input::placeholder{color:rgba(255,255,255,.25)}
+.chat-in .send{width:34px;height:34px;border-radius:50%;background:var(--primary);border:none;color:#fff;font-size:15px;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center}
+.chat-in .send:hover{background:var(--primary-dark);transform:scale(1.05)}
+.chat-feat{flex:1;min-width:260px;display:flex;flex-direction:column}
+.chat-feat .fl{display:flex;flex-direction:column;gap:10px;flex:1}
+.chat-feat .fi{background:var(--card);border-radius:var(--rs);padding:18px 20px;border:1px solid rgba(255,255,255,.04);transition:var(--t);display:flex;gap:14px;align-items:flex-start;flex:1}
+.chat-feat .fi:hover{border-color:rgba(108,92,231,.15);transform:translateX(4px)}
+.chat-feat .fi .fii{font-size:24px;flex-shrink:0;margin-top:2px}
+.chat-feat .fi .fit{flex:1}
+.chat-feat .fi .fit h5{font-size:16px;font-weight:600;color:var(--txt);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(108,92,231,.12)}
+.chat-feat .fi .fit p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.8;margin-top:4px}
+
+/* Slide5 */
+.lang-row{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+.lang-b{flex:1;min-width:160px;background:var(--card);border-radius:var(--rs);padding:14px;border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(8px);transition:var(--t);text-align:center}
+.lang-b:hover{border-color:var(--primary);transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.3)}
+.lang-b .lf{font-size:26px;margin-bottom:3px}
+.lang-b .ln{font-size:15px;font-weight:600;color:var(--txt)}
+.lang-b .lum{font-size:13px;color:var(--txt2);margin-top:5px;padding:7px;background:rgba(255,255,255,.04);border-radius:7px;font-style:italic;line-height:1.6}
+.lang-b .lar{font-size:12px;color:var(--secondary);margin-top:5px;font-weight:500;padding:5px 7px;background:rgba(108,92,231,.05);border-radius:5px}
+.lang-b .ld{font-size:15px;margin:3px 0;color:var(--txt3)}
+.shield-row{display:flex;gap:18px;flex-wrap:wrap;margin:20px 0}
+.sh-item{flex:1;min-width:200px;background:var(--card);border-radius:var(--r);padding:24px 22px 22px;border:1px solid rgba(255,255,255,.06);text-align:center;transition:var(--t)}
+.sh-item:hover{border-color:rgba(108,92,231,.2);transform:translateY(-4px)}
+.sh-item .shi{font-size:32px;margin-bottom:12px;display:block}
+.sh-item h4{font-size:17px;color:var(--txt);margin-bottom:14px;font-weight:700;padding-bottom:10px;border-bottom:1px solid rgba(108,92,231,.1)}
+.sh-item p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.8;margin-top:6px}
+.sh-item .stag{display:inline-block;margin-top:14px;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600}
+.sh-item .stag.warn{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.15)}
+.sh-item .stag.safe{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.15)}
+
+/* Slide6 商户端 */
+.m-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:20px 0}
+@media(max-width:768px){.m-grid{grid-template-columns:1fr}}
+.mc{background:var(--card);border-radius:var(--r);padding:22px;border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(8px);transition:var(--t)}
+.mc:hover{border-color:rgba(108,92,231,.2);transform:translateY(-4px)}
+.mc .mci{font-size:30px;margin-bottom:8px}
+.mc h4{font-size:17px;color:var(--txt);margin-bottom:4px}
+.mc .mcs{font-size:13px;color:var(--secondary);font-weight:600;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(108,92,231,.08)}
+.mc .mcd{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin-top:4px}
+.mc .mstats{display:flex;gap:10px;margin:12px 0}
+.mc .mstats .st{background:rgba(255,255,255,.04);border-radius:7px;padding:7px 10px;text-align:center;flex:1}
+.mc .mstats .st .num{font-size:22px;font-weight:800;color:var(--secondary)}
+.mc .mstats .st .lb{font-size:12px;color:rgba(255,255,255,.7);font-weight:500}
+.mc .ml{list-style:none;font-size:14px;color:rgba(255,255,255,.75);line-height:2.4;margin-top:8px}
+.mc .ml li::before{content:'→ ';color:var(--primary)}
+.mc .md{margin-top:12px;padding:10px 12px;background:rgba(255,255,255,.03);border-radius:7px;border:1px dashed rgba(108,92,231,.15);font-size:13px;color:rgba(255,255,255,.7);line-height:1.7}
+
+/* Slide7 技术架构 */
+.tech-row{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:start}
+@media(max-width:768px){.tech-row{grid-template-columns:1fr;gap:24px}}
+.tech-s{background:var(--card);border-radius:var(--r);padding:22px;border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(8px)}
+.tech-s .tl{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:9px;margin-bottom:9px;transition:var(--t)}
+.tech-s .tl:hover{transform:translateX(6px)}
+.tech-s .tl .tb{display:inline-block;padding:3px 10px;border-radius:5px;font-size:11px;font-weight:700;letter-spacing:.5px;color:#fff;min-width:54px;text-align:center;flex-shrink:0}
+.tech-s .tl .tn{font-size:15px;font-weight:600;color:var(--txt);flex-shrink:0}
+.tech-s .tl .td{font-size:13px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-f{background:rgba(59,130,246,.06);border-left:3px solid #3b82f6}
+.tl-b{background:rgba(139,92,246,.06);border-left:3px solid #8b5cf6}
+.tl-d{background:rgba(16,185,129,.06);border-left:3px solid #10b981}
+.tl-a{background:rgba(108,92,231,.06);border-left:3px solid var(--primary)}
+.tl-f .tb{background:#3b82f6}.tl-b .tb{background:#8b5cf6}.tl-d .tb{background:#10b981}.tl-a .tb{background:var(--primary)}
+.tech-s .tai{margin-top:12px;padding:12px 16px;background:rgba(108,92,231,.04);border-radius:9px;border:1px solid rgba(108,92,231,.1);font-size:14px;color:rgba(255,255,255,.75);line-height:1.8}
+.tech-s .tai strong{color:var(--secondary)}
+
+/* 性能指标 - 移动端单列 */
+.mg2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:480px){.mg2{grid-template-columns:1fr;gap:10px}}
+.mc2{background:var(--card);border-radius:var(--rs);padding:18px 14px;border:1px solid rgba(255,255,255,.06);text-align:center;transition:var(--t)}
+.mc2:hover{border-color:var(--primary);transform:scale(1.03)}
+.mc2 .mi{font-size:24px}
+.mc2 .mv{font-size:28px;font-weight:900;color:var(--white);margin:4px 0}
+.mc2 .ml{font-size:13px;color:rgba(255,255,255,.7);font-weight:500}
+.mc2 .mb{height:5px;background:rgba(255,255,255,.06);border-radius:4px;margin-top:10px;overflow:hidden}
+.mc2 .mb .mf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--primary),var(--primary-dark));transition:width 1.2s ease}
+
+/* Slide8 安全合规 */
+.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:20px 0}
+@media(max-width:768px){.comp-grid{grid-template-columns:1fr}}
+.ci{background:var(--card);border-radius:var(--r);padding:22px;border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(8px);transition:var(--t)}
+.ci:hover{border-color:rgba(108,92,231,.15);transform:translateY(-4px)}
+.ci .cii{font-size:30px;margin-bottom:12px;display:block}
+.ci h4{font-size:17px;color:var(--txt);margin-bottom:14px;font-weight:700;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.ci ul{list-style:none}
+.ci ul li{font-size:14px;color:rgba(255,255,255,.75);padding:5px 0;display:flex;align-items:center;gap:8px}
+.ci ul li::before{content:'✓';color:var(--green);font-weight:700}
+
+/* Key Advantage */
+.ka{background:linear-gradient(135deg,rgba(108,92,231,.08),rgba(108,92,231,.02));border:1px solid rgba(108,92,231,.15);border-radius:var(--rs);padding:16px 20px;margin:20px 0;display:flex;gap:12px;align-items:flex-start;backdrop-filter:blur(4px)}
+.ka .kai{font-size:22px;flex-shrink:0;margin-top:2px}
+.ka .kal{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--primary);font-weight:700;margin-bottom:4px}
+.ka .kat{font-size:15px;font-weight:500;color:var(--txt);line-height:1.7}
+.sn{background:rgba(255,255,255,.03);border-radius:var(--rs);padding:14px 18px;margin-top:24px;border-left:3px solid #1a4a8a;font-size:14px;color:rgba(255,255,255,.75);line-height:1.8}
+.sn .snl{font-weight:700;color:#2a6ab5;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+
+/* 页脚 */
+.foot{margin-top:32px;padding-top:14px;border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;font-size:12px;color:var(--txt3)}
+.foot .online{color:#4ade80;font-weight:600;display:flex;align-items:center;gap:6px}
+.foot .online::before{content:'';width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px rgba(34,197,94,.4)}
+
+/* 移动端优化 */
+@media(max-width:768px){
+  .navbar{padding:0 14px}
+  .navbar .brand span{display:none}
+  .nav-links a{font-size:10px;padding:4px 7px}
+  .slide{padding:56px 14px}
+  .phone-wrap{flex:1 1 100%}
+  .screen{min-height:460px}
+  .msgs{max-height:320px}
+  .devices .device{width:90px;height:130px}
+  .device-scr{padding:7px 5px}
+  .device-scr .bar{height:3px}
+  .chat-section{flex-direction:column}
+  .chat-section>*{min-width:auto}
+  .tech-s .tl{flex-wrap:wrap;gap:6px}
+  .tech-s .tl .tb{min-width:48px;font-size:10px}
+  .tech-s .tl .tn{font-size:14px}
+  .tech-s .tl .td{font-size:12px;white-space:normal}
+}
+@media(max-width:480px){
+  .lang-toggle button{padding:3px 8px;font-size:11px}
+  .nav-right .dot{display:none}
+  .devices{gap:10px}
+  .devices .device{width:72px;height:100px;border-radius:10px;padding:3px}
+  .device-scr{border-radius:8px;padding:5px 3px}
+  .device-scr .bar{height:2px;margin:1px 0}
+  .device-label{font-size:8px}
+  .nav-links a{font-size:9px;padding:3px 5px}
+}
+</style>
+</head>
+<body>
+
+<!-- ====== 0xAi 官网导航 ====== -->
+<style>
+.oxai-topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 56px;
+    background: rgba(10, 10, 26, 0.94);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 2000;
+    border-bottom: 1px solid rgba(108, 92, 231, 0.15);
+}
+.oxai-topbar .oxai-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+}
+.oxai-topbar .oxai-logo .logo-icon {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, #6C5CE7, #00D2FF);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    color: #fff;
+}
+.oxai-topbar .oxai-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.oxai-topbar .oxai-nav-links a {
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+.oxai-topbar .oxai-nav-links a:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.07);
+}
+.oxai-topbar .oxai-nav-links a.active {
+    color: #fff;
+    background: rgba(108,92,231,0.2);
+}
+.oxai-topbar .oxai-back-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, #6C5CE7, #00D2FF);
+    color: #fff !important;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 12px;
+}
+.oxai-topbar .oxai-back-home:hover {
+    transform: scale(1.05);
+}
+body { padding-top: 56px; }
+.navbar { top: 56px !important; }
+</style>
+
+<div class="oxai-topbar">
+    <a href="http://0xainet.top" class="oxai-logo">
+        <span class="logo-icon">0x</span>
+        0xAi
+    </a>
+    <div class="oxai-nav-links">
+        <a href="http://0xainet.top">官网</a>
+        <a href="http://0xainet.top/#projects">产品</a>
+        <a href="http://0xainet.top/#tech">技术</a>
+        <a href="http://0xainet.top/smartmenu" class="oxai-back-home">← 返回Smart Menu</a>
+    </div>
+</div>
+
+
+<nav class="navbar">
+  <div class="brand">
+    <div class="logo">AI</div>
+    <span class="lang-zh">AI 智能点餐</span>
+    <span class="lang-en">AI Smart Ordering</span>
+  </div>
+  <div class="nav-links">
+    <a href="#s1" class="active">1</a><a href="#s2">2</a><a href="#s3">3</a>
+    <a href="#s4">4</a><a href="#s5">5</a><a href="#s6">6</a><a href="#s7">7</a><a href="#s8">8</a>
+  </div>
+  <div class="nav-right">
+    <span class="dot"></span>
+    <div class="lang-toggle">
+      <button id="zh-btn" class="active">中文</button>
+      <button id="en-btn">EN</button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrapper">
+
+<!-- SLIDE 1: 封面 -->
+<section class="slide slide-cover" id="s1">
+  <div class="particles" id="pts"></div>
+  <div class="cover-content">
+    <div class="cover-badge">
+      <span class="lang-zh">📋 产品技术白皮书 · V1.0 Released</span>
+      <span class="lang-en">📋 Technical Whitepaper · V1.0 Released</span>
+    </div>
+    <h1>
+      <span class="lang-zh">全球多语言<br/>AI 智能点餐系统</span>
+      <span class="lang-en">Global Multi-Language<br/>AI Smart Ordering System</span>
+    </h1>
+    <div class="st">
+      <span class="lang-zh">语义理解 · 饮食安全 · 本地化深度融合</span>
+      <span class="lang-en">Semantic Understanding · Food Safety · Deep Localization</span>
+    </div>
+    <div class="slogan"><span class="slogan-text">" Speak Native, Order Safe "</span></div>
+    <div class="devices">
+      <div class="device"><div class="device-scr"><div class="bar og"></div><div class="bar w80"></div><div class="bar w50"></div><div class="bar rw"><span class="on"></span><span></span><span></span></div><div class="bar w70"></div><div class="dots"><span class="on"></span><span></span><span></span></div><div class="bar w40"></div><div class="bar gn"></div></div><div class="device-label lang-zh">用户端 · 中文</div><div class="device-label lang-en">User App · Chinese</div></div>
+      <div class="device"><div class="device-scr"><div class="bar og"></div><div class="bar w80"></div><div class="bar rw"><span></span><span class="on"></span><span></span></div><div class="bar w50"></div><div class="bar w70"></div><div class="dots"><span></span><span class="on"></span><span></span></div><div class="bar gn w40"></div></div><div class="device-label lang-zh">用户端 · English</div><div class="device-label lang-en">User App · English</div></div>
+      <div class="device"><div class="device-scr"><div class="bar og"></div><div class="bar w70"></div><div class="bar w80"></div><div class="bar rw"><span></span><span></span><span class="on"></span></div><div class="bar w50"></div><div class="dots"><span></span><span></span><span class="on"></span></div><div class="bar gn w60"></div></div><div class="device-label lang-zh">智能运营后台</div><div class="device-label lang-en">Smart Operations</div></div>
+    </div>
+    <div class="version"><span>📦 <span class="lang-zh">产品版本</span><span class="lang-en">Version</span>: V1.0</span><span>🌐 <span class="lang-zh">支持 10+ 语言</span><span class="lang-en">10+ Languages</span></span><span>✅ <span class="lang-zh">已通过压力测试</span><span class="lang-en">Stress-Tested</span></span></div>
+  </div>
+  <div class="scroll-down"><span class="lang-zh">向下滚动探索</span><span class="lang-en">Scroll to explore</span><div class="line"></div></div>
+</section>
+
+<!-- SLIDE 2: 痛点 - 全新布局，杜绝重叠 -->
+<section class="slide" id="s2">
+  <div class="slide-inner">
+    <div class="badge"><span>📋</span><span class="lang-zh">行业洞察 · 市场痛点</span><span class="lang-en">Industry Insight · Pain Points</span></div>
+    <h2 class="title"><span class="lang-zh">传统点餐系统的三大致命短板</span><span class="lang-en">3 Critical Flaws of Traditional Systems</span></h2>
+    <div class="sub"><span class="lang-zh">外国游客的真实困境 vs. 我们如何解决</span><span class="lang-en">Real struggles of foreign visitors vs. Our solutions</span></div>
+    <div class="p-grid2">
+      <div class="p-card2">
+        <div class="pi2">🌐</div>
+        <h4><span class="lang-zh">语言交互 · 鸡同鸭讲</span><span class="lang-en">Language Barrier</span></h4>
+        <div class="scene2"><div class="lb2 lang-zh">😰 真实场景</div><div class="lb2 lang-en">😰 Real Scenario</div><span class="lang-zh">"一位日本游客走进新加坡餐厅，菜单全是英文。想用翻译软件问'有没有不辣的面'却说不清楚，最后只能指着图片随便点。"</span><span class="lang-en">"A Japanese tourist in Singapore faces an English-only menu. Can't ask 'any non-spicy noodles?', points randomly at pictures."</span></div>
+        <div class="sol2"><div class="lb2 lang-zh">✅ 我们的方案</div><div class="lb2 lang-en">✅ Our Solution</div><span class="lang-zh">用日语直接说"辛くない麺はありますか？" AI 立即理解并用日语回答，推荐不辣的菜品，全程母语交流。</span><span class="lang-en">Just say in Japanese "辛くない麺はありますか？" AI understands and replies in Japanese instantly.</span></div>
+        <div class="gap2">❌ <span class="lang-zh">传统系统完全无法理解语义，只能展示固定文本</span><span class="lang-en">Traditional systems can't understand semantics — only fixed text</span></div>
+      </div>
+      <div class="p-card2">
+        <div class="pi2">🛡️</div>
+        <h4><span class="lang-zh">饮食安全 · 隐患重重</span><span class="lang-en">Food Safety Risks</span></h4>
+        <div class="scene2"><div class="lb2 lang-zh">😰 真实场景</div><div class="lb2 lang-en">😰 Real Scenario</div><span class="lang-zh">"一位对花生严重过敏的欧美游客用翻译软件艰难地问'这道菜有花生吗？'，服务员不确定地说'应该没有'。结果菜里有花生酱，紧急送医。"</span><span class="lang-en">"A tourist with severe peanut allergy asks 'Does this have peanuts?'. Waiter says 'I think not'. Emergency hospital visit."</span></div>
+        <div class="sol2"><div class="lb2 lang-zh">✅ 我们的方案</div><div class="lb2 lang-en">✅ Our Solution</div><span class="lang-zh">直接告诉 AI "我花生过敏"，AI 自动过滤所有含花生的菜品，并标注"已为您过滤过敏原 ✅"。</span><span class="lang-en">Tell AI "I'm allergic to peanuts". AI auto-filters all peanut dishes, marks "Allergens filtered ✅".</span></div>
+        <div class="gap2">❌ <span class="lang-zh">传统菜单无过敏原标识，游客不敢吃，服务员不敢保证</span><span class="lang-en">No allergen info on traditional menus — risky for everyone</span></div>
+      </div>
+      <div class="p-card2">
+        <div class="pi2">🍽️</div>
+        <h4><span class="lang-zh">菜品理解 · 盲人摸象</span><span class="lang-en">Dish Confusion</span></h4>
+        <div class="scene2"><div class="lb2 lang-zh">😰 真实场景</div><div class="lb2 lang-en">😰 Real Scenario</div><span class="lang-zh">"一道'佛跳墙'，外国游客完全不知道是什么。想了解口味、食材、做法，传统菜单给不了任何信息。"</span><span class="lang-en">"A dish called 'Buddha Jumps Over the Wall' — what is it? Want to know ingredients, taste? Traditional menus give zero info."</span></div>
+        <div class="sol2"><div class="lb2 lang-zh">✅ 我们的方案</div><div class="lb2 lang-en">✅ Our Solution</div><span class="lang-zh">AI 深度解读每道菜："佛跳墙是福建名菜，以鲍鱼、海参等高档食材慢炖而成，口味咸鲜浓郁。"</span><span class="lang-en">AI explains: "Buddha Jumps Over the Wall is a Fujian classic, slow-cooked with abalone, sea cucumber — rich, savory."</span></div>
+        <div class="gap2">❌ <span class="lang-zh">仅靠图片和菜名，游客无法了解口味和食材</span><span class="lang-en">Pictures + names only — severe info asymmetry</span></div>
+      </div>
+    </div>
+    <div class="ka"><div class="kai">⚡</div><div><div class="kal lang-zh">核心优势</div><div class="kal lang-en">Key Advantage</div><div class="kat lang-zh">本产品填补了"语义交互"与"安全校验"的功能空白，而非简单的菜单数字化。让每个游客都能用母语安全、自信地点餐。搜索准确率 &gt; 95%，点餐耗时缩短 60%。</div><div class="kat lang-en">Our product fills the gap in semantic interaction and safety verification. Every tourist can order safely and confidently. Search accuracy &gt; 95%, ordering time -60%.</div></div></div>
+  </div>
+</section>
+
+<!-- SLIDE 3: 核心架构 - 间距加大，不会重叠 -->
+<section class="slide" id="s3">
+  <div class="slide-inner">
+    <div class="badge"><span>🧠</span><span class="lang-zh">核心架构</span><span class="lang-en">Core Architecture</span></div>
+    <h2 class="title"><span class="lang-zh">AI 原生架构 · 重新定义点餐交互</span><span class="lang-en">AI-Native Architecture · Redefining Ordering</span></h2>
+    <div class="engine-wrap">
+      <div class="engine">
+        <div class="core">
+          <span class="ci">⚙️</span>
+          <span class="lang-zh">AI 语义引擎</span>
+          <span class="lang-en">AI Semantic Engine</span>
+        </div>
+        <div class="enode e1">
+          <div class="ni">🌐</div>
+          <div class="nt lang-zh">多语言意图识别</div>
+          <div class="nt lang-en">Multi-Language Intent</div>
+          <div class="nd lang-zh">10+ 语言 · 你说什么 AI 用什么</div>
+          <div class="nd lang-en">10+ languages · You speak, AI speaks</div>
+          <div class="ntag"><span class="lang-zh">实时互译</span><span class="lang-en">Real-time Translate</span></div>
+        </div>
+        <div class="enode e2">
+          <div class="ni">🔍</div>
+          <div class="nt lang-zh">向量语义检索</div>
+          <div class="nt lang-en">Vector Semantic Search</div>
+          <div class="nd lang-zh">模糊搜索 + 语义匹配</div>
+          <div class="nd lang-en">Fuzzy + semantic match</div>
+          <div class="ntag"><span class="lang-zh">理解意图</span><span class="lang-en">Intent Understanding</span></div>
+        </div>
+        <div class="enode e3">
+          <div class="ni">🛡️</div>
+          <div class="nt lang-zh">饮食安全盾</div>
+          <div class="nt lang-en">Food Safety Shield</div>
+          <div class="nd lang-zh">对话式过敏原/宗教过滤</div>
+          <div class="nd lang-en">Conversational allergen/religious filter</div>
+          <div class="ntag"><span class="lang-zh">安全优先</span><span class="lang-en">Safety First</span></div>
+        </div>
+        <div class="enode e4">
+          <div class="ni">🤖</div>
+          <div class="nt lang-zh">智能推荐算法</div>
+          <div class="nt lang-en">Smart Recommendation</div>
+          <div class="nd lang-zh">偏好 · 预算 · 场景</div>
+          <div class="nd lang-en">Preference · Budget · Scene</div>
+          <div class="ntag"><span class="lang-zh">个性化</span><span class="lang-en">Personalized</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ka"><div class="kai">⚡</div><div><div class="kal lang-zh">核心优势</div><div class="kal lang-en">Key Advantage</div><div class="kat lang-zh">AI 不是外挂功能，而是底层驱动引擎。所有交互均经过 AI 处理，而非简单规则匹配。基于开源大模型蒸馏 + 向量语义检索的技术壁垒，让竞争对手难以复制。</div><div class="kat lang-en">AI is not an add-on — it's the core engine. Every interaction is AI-processed. Our moat: open-source LLM distillation + vector semantic search — hard to replicate.</div></div></div>
+    <div class="sn"><div class="snl lang-zh">🎤 演讲备注</div><div class="snl lang-en">🎤 Speaker Notes</div><span class="lang-zh">我们采用 AI 原生架构而非传统规则引擎。从多语言意图识别、向量语义检索到饮食安全盾和智能推荐，四大模块全部由 AI 驱动。技术壁垒在于自研的蒸馏模型和向量检索系统，这是纯规则引擎无法企及的。</span><span class="lang-en">We use AI-native architecture, not rule-based. Four modules all AI-driven. Our tech moat: custom distilled models + vector search system — impossible for rule-based engines to match.</span></div>
+  </div>
+</section>
+
+<!-- SLIDE 4: 对话点餐 -->
+<section class="slide" id="s4">
+  <div class="slide-inner">
+    <div class="badge"><span>💬</span><span class="lang-zh">AI 对话点餐</span><span class="lang-en">AI Conversational Ordering</span></div>
+    <h2 class="title"><span class="lang-zh">像聊天一样点餐</span><span class="lang-en">Order Like Chatting</span></h2>
+    <div class="sub"><span class="lang-zh">自然语言 → 预算推荐 → 一键下单 · 全程零手动操作</span><span class="lang-en">Natural Language → Budget Recommend → One-Click Order · Fully Hands-Free</span></div>
+    <div class="chat-section">
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="screen">
+            <div class="chat-h">
+              <div class="av">AI</div>
+              <div><div class="nm lang-zh">AI 点餐助手</div><div class="nm lang-en">AI Ordering Assistant</div><div class="st"><span class="lang-zh">在线 · 多语言</span><span class="lang-en">Online · Multilingual</span></div></div>
+            </div>
+            <div class="msgs" id="chatMsgs">
+              <div class="msg a">
+                <div class="al">AI 助手</div>
+                <span class="lang-zh">👋 你好！我是你的 AI 点餐助手。例如：</span>
+                <span class="lang-en">👋 Hi! I'm your AI assistant. Try:</span>
+                <span class="lang-zh" style="display:block;margin-top:4px;">• "推荐 200 元以内的辣味套餐"</span>
+                <span class="lang-en" style="display:block;margin-top:4px;">• "Recommend spicy set meals under $30"</span>
+                <span class="lang-zh">• "我花生过敏，有什么推荐？"</span>
+                <span class="lang-en">• "I'm allergic to peanuts, any suggestions?"</span>
+              </div>
+              <div class="msg u">
+                <span class="lang-zh">你好！我想吃辣的，预算 200 元以内，有什么推荐？</span>
+                <span class="lang-en">Hi! I want something spicy, budget under $30, any recs?</span>
+              </div>
+              <div class="msg a">
+                <div class="al">AI 助手</div>
+                <span class="lang-zh">好的！根据你的需求（🌶️ 辣味 · 💰 预算 ≤200元），为你推荐：</span>
+                <span class="lang-en">Sure! Based on your needs (🌶️ Spicy · 💰 Budget ≤$30):</span>
+                <div class="dc"><div><div class="dn lang-zh">🔥 麻辣香锅套餐</div><div class="dn lang-en">🔥 Spicy Hot Pot Set</div><div class="dm">⭐ 98%</div></div><div class="dp">¥168</div></div>
+                <div class="dc"><div><div class="dn lang-zh">🌶️ 水煮牛肉 + 米饭</div><div class="dn lang-en">🌶️ Boiled Beef + Rice</div><div class="dm">⭐ 95%</div></div><div class="dp">¥88</div></div>
+                <div class="dc"><div><div class="dn lang-zh">🍜 酸辣粉套餐</div><div class="dn lang-en">🍜 Hot &amp; Sour Noodles</div><div class="dm">⭐ 92%</div></div><div class="dp">¥45</div></div>
+                <div class="tags"><span class="tag">🌶️ 辣味</span><span class="tag">💰 ≤200元</span><span class="tag">🔥 热销</span></div>
+                <span class="lang-zh" style="display:block;margin-top:5px;font-size:13px;color:var(--txt2);">要直接下单麻辣香锅套餐吗？</span>
+                <span class="lang-en" style="display:block;margin-top:5px;font-size:13px;color:var(--txt2);">Order the Spicy Hot Pot Set?</span>
+              </div>
+              <div class="msg u"><span class="lang-zh">麻辣香锅套餐不错！帮我下单，送到 3 号桌。</span><span class="lang-en">Great! Please order it for Table 3.</span></div>
+              <div class="msg a">
+                <div class="al">AI 助手</div>
+                <span class="lang-zh">✅ 已为您下单！</span><span class="lang-en">✅ Order placed!</span>
+                <div class="cb"><div class="ct lang-zh">📋 订单确认</div><div class="ct lang-en">📋 Order Confirmed</div><div class="cl lang-zh">🔥 麻辣香锅套餐 × 1 — ¥168</div><div class="cl lang-en">🔥 Spicy Hot Pot Set × 1 — ¥168</div><div class="cl lang-zh">📍 3 号桌 · 预计 15 分钟</div><div class="cl lang-en">📍 Table 3 · Est. 15 min</div></div>
+                <span class="lang-zh" style="display:block;margin-top:5px;font-size:13px;color:var(--txt2);">😊 还需要其他服务吗？</span>
+                <span class="lang-en" style="display:block;margin-top:5px;font-size:13px;color:var(--txt2);">😊 Anything else I can help?</span>
+              </div>
+              <div class="msg u"><span class="lang-zh">我朋友不能吃辣，有推荐吗？预算 100 以内。</span><span class="lang-en">My friend can't eat spicy. Any recs under $15?</span></div>
+              <div class="msg a">
+                <div class="al">AI 助手</div>
+                <span class="lang-zh">好的，已理解！以下是不辣的选择：</span>
+                <span class="lang-en">Got it! Non-spicy options:</span>
+                <div class="dc"><div><div class="dn lang-zh">🥟 鲜肉小笼包 (8只)</div><div class="dn lang-en">🥟 Pork Dumplings (8pcs)</div><div class="dm">⭐ 96%</div></div><div class="dp">¥38</div></div>
+                <div class="dc"><div><div class="dn lang-zh">🍚 扬州炒饭</div><div class="dn lang-en">🍚 Yangzhou Fried Rice</div><div class="dm">⭐ 93%</div></div><div class="dp">¥42</div></div>
+                <div class="tags"><span class="tag">🚫🌶️ 不辣</span><span class="tag">💰 ≤100元</span><span class="tag">🥟 主食</span></div>
+                <button class="ab lang-zh" onclick="alert('✅ 演示模式：已下单扬州炒饭到3号桌！')">🛒 下单扬州炒饭</button>
+                <button class="ab lang-en" onclick="alert('✅ Demo: Ordered Fried Rice to Table 3!')">🛒 Order Fried Rice</button>
+              </div>
+            </div>
+            <div class="chat-in">
+              <input type="text" class="lang-zh" placeholder="输入需求，如：200元预算推荐...">
+              <input type="text" class="lang-en" placeholder="e.g. Recommend under $30...">
+              <button class="send" onclick="alert('📱 演示模式：实际系统中AI将即时响应！')">➤</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-feat">
+        <div class="fl">
+          <div class="fi"><div class="fii">💰</div><div class="fit"><h5 class="lang-zh">预算智能推荐</h5><h5 class="lang-en">Budget-Based Recommendations</h5><p class="lang-zh">只需说"200 元预算"、"便宜点的"或"来点贵的"，AI 立刻按价格区间精准筛选。支持模糊表达：用户说"别太贵"也能理解。智能匹配预算与菜品，避免超支尴尬，让每位顾客都能找到适合自己的价位。</p><p class="lang-en">Just say "Under $30", "cheaper" or "something pricier" — AI filters by price instantly. Supports fuzzy expressions like "not too expensive". Smart budget matching avoids overspending.</p></div></div>
+          <div class="fi"><div class="fii">🔄</div><div class="fit"><h5 class="lang-zh">全流程对话完成</h5><h5 class="lang-en">End-to-End Chat Flow</h5><p class="lang-zh">从选餐到下单到支付确认，全部在对话中一气呵成。无需跳转页面、无需手动填写表单。用户只需要说话或打字，AI 完成所有操作。真正的"说到做到"——说一句话，菜就点好了。</p><p class="lang-en">From selection to order to payment confirmation — all within the chat. No page jumps, no form filling. Users just speak or type, AI does everything else. Truly "say it, done it".</p></div></div>
+          <div class="fi"><div class="fii">🗣️</div><div class="fit"><h5 class="lang-zh">多轮上下文理解</h5><h5 class="lang-en">Multi-Turn Context Understanding</h5><p class="lang-zh">"再便宜点"、"朋友不能吃辣"、"刚才那个不要了" —— AI 完整记住对话历史，无需用户重复前面的需求。多轮对话中自由修改、追加条件，AI 始终知道上下文，就像跟真正的服务员交流一样自然。</p><p class="lang-en">"Cheaper", "friend can't eat spicy", "remove the previous one" — AI remembers full conversation history. Modify and add conditions freely across multiple turns, just like talking to a real waiter.</p></div></div>
+          <div class="fi"><div class="fii">🥜</div><div class="fit"><h5 class="lang-zh">对话式过敏原过滤</h5><h5 class="lang-en">Conversational Allergen Filtering</h5><p class="lang-zh">不需要提前在设置里勾选过敏原！只要在对话中说"我花生过敏"、"不能吃海鲜"或"有乳糖不耐"，AI 立即理解并自动屏蔽所有相关菜品。推荐时还会标注"已为您过滤过敏原 ✅"，让有饮食禁忌的用户也能放心点餐。</p><p class="lang-en">No need to pre-set allergens! Just say "I'm allergic to peanuts", "no seafood" or "lactose intolerant" — AI instantly understands and blocks all related dishes. Marks "Allergens filtered ✅" for peace of mind.</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="ka"><div class="kai">⚡</div><div><div class="kal lang-zh">用户体验核心</div><div class="kal lang-en">UX Core</div><div class="kat lang-zh">搜索准确率 &gt; 95%，点餐耗时缩短 60%。模糊语义 + 预算推荐 + 多轮对话，全程零手动操作。用户只需说一句话，AI 完成其余所有工作。</div><div class="kat lang-en">Search accuracy &gt; 95%, ordering time -60%. Fuzzy semantics + budget recs + multi-turn, fully hands-free. One sentence from user, AI does the rest.</div></div></div>
+  </div>
+</section>
+
+<!-- SLIDE 5: 多语言 & 安全 -->
+<section class="slide" id="s5">
+  <div class="slide-inner">
+    <div class="badge"><span>🌍</span><span class="lang-zh">多语言 &amp; 饮食安全</span><span class="lang-en">Multi-Language &amp; Food Safety</span></div>
+    <h2 class="title"><span class="lang-zh">你说什么语言，AI 就用什么语言</span><span class="lang-en">Your Language = AI's Language</span></h2>
+    <div class="sub"><span class="lang-zh">不用预设 · 不用切换 · 直接说就行</span><span class="lang-en">No setup · No switching · Just speak</span></div>
+    <div class="lang-row">
+      <div class="lang-b"><div class="lf">🇨🇳</div><div class="ln">中文</div><div class="ld">👇</div><div class="lum">"我想吃不含海鲜的辣味主食"</div><div class="lar">🤖 为您找到 3 道辣味主食，已过滤海鲜 ✅</div></div>
+      <div class="lang-b"><div class="lf">🇬🇧</div><div class="ln">English</div><div class="ld">👇</div><div class="lum">"Spicy main dish, no seafood please"</div><div class="lar">🤖 Found 3 spicy mains, seafood filtered ✅</div></div>
+      <div class="lang-b"><div class="lf">🇯🇵</div><div class="ln">日本語</div><div class="ld">👇</div><div class="lum">"辛いメイン料理、海鮮なしで"</div><div class="lar">🤖 辛いメイン料理を3品見つけました、海鮮除去済み ✅</div></div>
+      <div class="lang-b"><div class="lf">🇰🇷</div><div class="ln">한국어</div><div class="ld">👇</div><div class="lum">"해산물 없는 매운 메인 요리"</div><div class="lar">🤖 매운 메인 요리 3개를 찾았습니다, 해산물 제외 ✅</div></div>
+      <div class="lang-b"><div class="lf">🇲🇾</div><div class="ln">Bahasa Melayu</div><div class="ld">👇</div><div class="lum">"Makanan pedas tanpa seafood"</div><div class="lar">🤖 Dijumpai 3 hidangan pedas, seafood ditapis ✅</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:18px;"><span style="display:inline-block;background:rgba(108,92,231,.08);padding:7px 22px;border-radius:30px;font-size:14px;color:var(--txt2);">🌐 <span class="lang-zh">支持 10+ 语言 · 自动识别用户语言 · AI 以同语言回复</span><span class="lang-en">10+ languages · Auto-detect · AI replies in the same language</span></span></div>
+    <div class="shield-row">
+      <div class="sh-item"><div class="shi">🥜</div><h4 class="lang-zh">对话式过敏原过滤</h4><h4 class="lang-en">Conversational Allergen Filter</h4><p class="lang-zh">无需预设！对话中说"我花生过敏"、"我不能吃海鲜"，AI 立即理解并自动过滤，显示"已为您过滤过敏原 ✅"</p><p class="lang-en">No preset! Say "I'm allergic to peanuts", AI instantly filters. Shows "Allergens filtered ✅"</p><span class="stag safe lang-zh">AI 语义理解 · 动态过滤</span><span class="stag safe lang-en">AI understands · dynamic filter</span></div>
+      <div class="sh-item"><div class="shi">☪️</div><h4 class="lang-zh">宗教合规校验</h4><h4 class="lang-en">Religious Compliance</h4><p class="lang-zh">清真 (Halal) / 素食 (Vegan) / 犹太洁食 (Kosher) 标签严格匹配。告诉 AI "我要清真食品"，AI 自动校验推荐</p><p class="lang-en">Halal/Vegan/Kosher labels strictly matched. Tell AI "I need Halal food" and it auto-verifies</p><span class="stag safe lang-zh">AI 校验 + 认证标识</span><span class="stag safe lang-en">AI verified + certified</span></div>
+      <div class="sh-item"><div class="shi">🌍</div><h4 class="lang-zh">语言即本地化</h4><h4 class="lang-en">Language = Localization</h4><p class="lang-zh">用户用什么语言提问，AI 就用什么语言回答。菜单、推荐、下单确认全程使用用户语言。无需检测 IP，无需手动切换</p><p class="lang-en">Whatever language user speaks, AI replies in same language. Menu, recs, confirmation — all in user's language.</p><span class="stag safe lang-zh">你说什么 · 看到什么</span><span class="stag safe lang-en">You speak it · You see it</span></div>
+    </div>
+    <div class="ka"><div class="kai">⚡</div><div><div class="kal lang-zh">技术壁垒</div><div class="kal lang-en">Tech Moat</div><div class="kat lang-zh">你说什么语言，AI 就用什么语言。过敏原通过对话提出，无需预设。语言即本地化——低门槛体验 + 高壁垒技术（自研多语言语义模型 + 向量检索）。</div><div class="kat lang-en">Your language = AI's language. Allergens via conversation, no preset. Low-friction UX + high-tech moat (custom multilingual semantic model + vector search).</div></div></div>
+  </div>
+</section>
+
+<!-- SLIDE 6: 商户端 -->
+<section class="slide" id="s6">
+  <div class="slide-inner">
+    <div class="badge"><span>🏪</span><span class="lang-zh">智能运营后台</span><span class="lang-en">Smart Operations Backend</span></div>
+    <h2 class="title"><span class="lang-zh">AI 赋能智能运营后台</span><span class="lang-en">AI-Empowered Smart Operations</span></h2>
+    <div class="sub"><span class="lang-zh">输入菜单文本 → AI 自动完成一切</span><span class="lang-en">Input menu text → AI does the rest</span></div>
+    <div class="m-grid">
+      <div class="mc"><div class="mci">📝</div><h4 class="lang-zh">AI 智能菜单引擎</h4><h4 class="lang-en">AI Smart Menu Engine</h4><div class="mcs lang-zh">「输入文本 · 即刻生成」</div><div class="mcs lang-en">「Input text · Instant generation」</div><div class="mcd"><span class="lang-zh">商户只需输入菜单文本（菜名 + 价格），AI 自动生成：</span><span class="lang-en">Merchant inputs dish name + price, AI auto-generates:</span></div><ul class="ml"><li class="lang-zh">多语言描述（中/英/马来/日/韩...）</li><li class="lang-en">Multilingual descriptions (CN/EN/MY/JP/KR...)</li><li class="lang-zh">智能标签（口味、食材、烹饪方式）</li><li class="lang-en">Smart tags (taste, ingredients, cooking method)</li><li class="lang-zh">过敏原与宗教合规信息</li><li class="lang-en">Allergen &amp; religious compliance info</li></ul><div class="md"><span class="lang-zh">📥 输入：</span><span class="lang-en">📥 Input: </span><em class="lang-zh">"麻婆豆腐 ¥38"</em><em class="lang-en">"Mapo Tofu ¥38"</em><br><span class="arr">→</span> <span class="lang-zh">AI 自动生成完整菜单卡片</span><span class="lang-en">AI generates full menu card</span></div></div>
+      <div class="mc"><div class="mci">📲</div><h4 class="lang-zh">智能订单调度</h4><h4 class="lang-en">Smart Order Dispatch</h4><div class="mcs lang-zh">「自动分发 · 异常预警」</div><div class="mcs lang-en">「Auto-dispatch · Anomaly alerts」</div><div class="mcd"><span class="lang-zh">AI 自动将订单分发至厨房/前台。检测到备注冲突（如"不要辣" + "麻辣锅"）时，即时预警</span><span class="lang-en">AI auto-dispatches orders. Conflict detection alerts both merchant and user</span></div><div class="mstats"><div class="st"><div class="num">80%</div><div class="lb lang-zh">错误率降低</div><div class="lb lang-en">Error reduction</div></div><div class="st"><div class="num">&lt;3s</div><div class="lb lang-zh">分发速度</div><div class="lb lang-en">Dispatch speed</div></div></div></div>
+      <div class="mc"><div class="mci">🎯</div><h4 class="lang-zh">自动化营销</h4><h4 class="lang-en">Automated Marketing</h4><div class="mcs lang-zh">「精准触达 · 提升复购」</div><div class="mcs lang-en">「Precise reach · Boost retention」</div><div class="mcd"><span class="lang-zh">AI 基于用户画像与历史订单，自动发放个性化优惠券</span><span class="lang-en">AI auto-sends personalized coupons based on profiles &amp; history</span></div><ul class="ml"><li class="lang-zh">回头客专享 8 折券</li><li class="lang-en">Returning customer 20% off</li><li class="lang-zh">新用户首单立减</li><li class="lang-en">New user first order discount</li><li class="lang-zh">场景化促销（雨天/节日）</li><li class="lang-en">Scene promos (rainy/holiday)</li></ul></div>
+    </div>
+    <div class="ka"><div class="kai">⚡</div><div><div class="kal lang-zh">核心优势</div><div class="kal lang-en">Key Advantage</div><div class="kat lang-zh">菜单录入成本降低 90%，订单处理错误率降低 80%。AI 辅助决策，降低商户运营门槛，让不懂技术的餐厅也能轻松使用。</div><div class="kat lang-en">90% lower menu entry cost, 80% fewer order errors. AI-assisted decisions lower operational barriers for restaurants of any size.</div></div></div>
+  </div>
+</section>
+
+<!-- SLIDE 7: 技术架构 -->
+<section class="slide" id="s7">
+  <div class="slide-inner">
+    <div class="badge"><span>⚙️</span><span class="lang-zh">技术架构</span><span class="lang-en">Tech Architecture</span></div>
+    <h2 class="title"><span class="lang-zh">企业级架构 · 高并发低延迟</span><span class="lang-en">Enterprise Architecture · High Concurrency, Low Latency</span></h2>
+    <div class="tech-row">
+      <div class="tech-s">
+        <h4 style="margin-bottom:14px;color:var(--txt);font-size:17px;"><span class="lang-zh">📐 技术栈</span><span class="lang-en">📐 Tech Stack</span></h4>
+        <div class="tl tl-f"><span class="tb">Frontend</span><span class="tn">Vue 3 + Flutter</span><span class="td lang-zh">(PWA · 离线可用)</span><span class="td lang-en">(PWA · offline capable)</span></div>
+        <div class="tl tl-b"><span class="tb">Backend</span><span class="tn">Python FastAPI</span><span class="td lang-zh">(异步高并发)</span><span class="td lang-en">(Async high concurrency)</span></div>
+        <div class="tl tl-d">
+          <span class="tb">Database</span>
+          <span class="tn"><span class="lang-zh">RAG 向量引擎</span><span class="lang-en">RAG Vector Engine</span></span>
+          <span class="td lang-zh">(数据向量化与检索)</span>
+          <span class="td lang-en">(Data vectorization &amp; retrieval)</span>
+        </div>
+        <div class="tl tl-a"><span class="tb">AI</span><span class="tn"><span class="lang-zh">开源大模型蒸馏 + 自研 Prompt 工程</span><span class="lang-en">Open-source LLM Distillation + Custom Prompt</span></span></div>
+        <div class="tai"><strong class="lang-zh">🧠 持续学习机制</strong><strong class="lang-en">🧠 Continuous Learning</strong><br><span class="lang-zh">基于开源大模型进行蒸馏优化，确保推理速度与多语言适配性。随着用户数据持续输入，模型不断微调优化，推荐越来越精准。</span><span class="lang-en">Distilled from open-source LLMs for speed and multilingual adaptability. Continuous fine-tuning with user data makes AI smarter over time.</span></div>
+      </div>
+      <div>
+        <h4 style="margin-bottom:14px;color:var(--txt);font-size:17px;"><span class="lang-zh">📊 性能指标</span><span class="lang-en">📊 Performance Metrics</span></h4>
+        <div class="mg2">
+          <div class="mc2"><div class="mi">🚀</div><div class="mv">&lt; 1.5s</div><div class="ml lang-zh">首屏加载 (4G)</div><div class="ml lang-en">First Load (4G)</div><div class="mb"><div class="mf" style="width:96%"></div></div></div>
+          <div class="mc2"><div class="mi">⚡</div><div class="mv">&lt; 200ms</div><div class="ml lang-zh">API 响应 (P99)</div><div class="ml lang-en">API Response (P99)</div><div class="mb"><div class="mf" style="width:98%"></div></div></div>
+          <div class="mc2"><div class="mi">🛡️</div><div class="mv">2000+</div><div class="ml lang-zh">QPS 并发</div><div class="ml lang-en">Concurrent QPS</div><div class="mb"><div class="mf" style="width:92%"></div></div></div>
+          <div class="mc2"><div class="mi">🔒</div><div class="mv">99.9%</div><div class="ml lang-zh">SLA 可用性</div><div class="ml lang-en">SLA Availability</div><div class="mb"><div class="mf" style="width:99%"></div></div></div>
+        </div>
+        <div style="margin-top:14px;text-align:center;"><span style="display:inline-block;background:rgba(34,197,94,.08);padding:7px 18px;border-radius:20px;font-size:14px;color:#4ade80;border:1px solid rgba(34,197,94,.1);">✅ <span class="lang-zh">系统状态：在线稳定 · 已通过压力测试</span><span class="lang-en">System: Online &amp; Stable · Stress-Tested</span></span></div>
+      </div>
+    </div>
+    <div class="ka"><div class="kai">⚡</div><div><div class="kal lang-zh">技术壁垒</div><div class="kal lang-en">Tech Moat</div><div class="kat lang-zh">向量检索无需额外中间件（pgvector 原生集成），架构更稳。开源大模型蒸馏确保速度与适配，持续学习形成数据飞轮——用户越多，AI 越聪明，竞品越难追赶。</div><div class="kat lang-en">Vector search needs no extra middleware (pgvector native). LLM distillation ensures speed. Continuous learning creates a data flywheel — more users = smarter AI = harder for competitors.</div></div></div>
+  </div>
+</section>
+
+<!-- SLIDE 8: 安全合规 -->
+<section class="slide" id="s8">
+  <div class="slide-inner">
+    <div class="badge"><span>🔒</span><span class="lang-zh">安全 &amp; 合规</span><span class="lang-en">Security &amp; Compliance</span></div>
+    <h2 class="title"><span class="lang-zh">金融级安全 · 符合 PDPA 合规标准</span><span class="lang-en">Financial-Grade Security · PDPA Compliant</span></h2>
+    <div class="comp-grid">
+      <div class="ci"><div class="cii">🔐</div><h4 class="lang-zh">数据加密</h4><h4 class="lang-en">Data Encryption</h4><ul><li class="lang-zh">传输：全站 HTTPS (TLS 1.3)</li><li class="lang-en">Transit: HTTPS (TLS 1.3)</li><li class="lang-zh">存储：敏感字段 AES-256 加密</li><li class="lang-en">At Rest: AES-256 encryption</li></ul></div>
+      <div class="ci"><div class="cii">📋</div><h4 class="lang-zh">隐私合规 (PDPA)</h4><h4 class="lang-en">Privacy Compliance (PDPA)</h4><ul><li class="lang-zh">数据本地化：新加坡节点</li><li class="lang-en">Data localized in Singapore</li><li class="lang-zh">用户数据导出与删除接口</li><li class="lang-en">Data export &amp; delete APIs</li></ul></div>
+      <div class="ci"><div class="cii">📊</div><h4 class="lang-zh">风控审计</h4><h4 class="lang-en">Risk Audit</h4><ul><li class="lang-zh">全链路日志，操作可追溯</li><li class="lang-en">Full-chain logging, traceable</li><li class="lang-zh">防刷单 / 防欺诈策略</li><li class="lang-en">Anti-fraud strategies</li></ul></div>
+    </div>
+    <div class="ka"><div class="kai">⚡</div><div><div class="kal lang-zh">核心优势</div><div class="kal lang-en">Key Advantage</div><div class="kat lang-zh">严格遵循新马两地数据隐私法规。金融级加密标准，确保用户数据零泄露。合规即信任，信任即商业壁垒。</div><div class="kat lang-en">Strictly follows SG &amp; MY privacy regulations. Financial-grade encryption ensures zero data leaks. Compliance builds trust, trust builds moat.</div></div></div>
+    <div class="foot">
+      <span class="online"><span class="lang-zh">系统状态：在线稳定</span><span class="lang-en">System: Online &amp; Stable</span></span>
+      <span>© 2026 AI Smart Ordering · <span class="lang-zh">产品技术白皮书</span><span class="lang-en">Technical Whitepaper</span></span>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+  const c=document.getElementById('pts');
+  if(c) for(let i=0;i<35;i++){const p=document.createElement('div');p.className='p';p.style.left=Math.random()*100+'%';p.style.width=(Math.random()*3+1)+'px';p.style.height=p.style.width;p.style.animationDuration=(Math.random()*20+10)+'s';p.style.animationDelay=(Math.random()*15)+'s';p.style.opacity=Math.random()*.5+.1;c.appendChild(p)}
+  const zb=document.getElementById('zh-btn'),eb=document.getElementById('en-btn');
+  function sw(l){if(l==='en'){document.documentElement.classList.add('en-mode');zb.classList.remove('active');eb.classList.add('active')}else{document.documentElement.classList.remove('en-mode');zb.classList.add('active');eb.classList.remove('active')}try{localStorage.setItem('preferredLang',l)}catch(e){}}
+  zb.addEventListener('click',function(){sw('zh')});eb.addEventListener('click',function(){sw('en')});
+  try{const s=localStorage.getItem('preferredLang');if(s==='en')sw('en')}catch(e){}
+  const links=document.querySelectorAll('.nav-links a[href^="#"]'),slides=document.querySelectorAll('.slide');
+  function ua(){let cur='';slides.forEach(function(s){const r=s.getBoundingClientRect();if(r.top<=120&&r.bottom>120)cur=s.id});links.forEach(function(l){if(l.getAttribute('href')==='#'+cur)l.classList.add('active');else l.classList.remove('active')})}
+  window.addEventListener('scroll',ua);window.addEventListener('load',ua);
+  links.forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();const t=document.querySelector(l.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
+  const fills=document.querySelectorAll('.mf'),obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){const el=e.target,w=el.getAttribute('data-width');if(w){el.style.transition='none';el.style.width='0%';requestAnimationFrame(function(){el.style.transition='width 1.2s ease';el.style.width=w})}}})},{threshold:.2});
+  fills.forEach(function(f){var w=f.style.width;if(w){f.setAttribute('data-width',w);f.style.width='0%'}obs.observe(f)});
+  console.log('✅ AI Smart Ordering System PPT ready!');
+})();
+</script>
+</body>
+</html>
