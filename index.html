@@ -9,7 +9,6 @@
     <style>
         .lang-zh { display: inline !important; }
         .lang-en { display: none !important; }
-        html.en-mode .lang-zh { display: none !important; }
         html.en-mode .lang-en { display: inline !important; }
         
         .lang-toggle-btn {
@@ -457,7 +456,7 @@
                 <a href="/shop" target="_blank"><i class="fas fa-store"></i> <span class="lang-zh">优选商城</span><span class="lang-en">E-Shop</span></a>
                 <a href="/smartmenu/" target="_blank"><i class="fas fa-utensils"></i> Smart Menu</a>
                 <a href="https://github.com/sftgroup" target="_blank"><i class="fas fa-chart-line"></i> AItrader</a>
-                <a href="http://43.163.105.172:8004" target="_blank"><i class="fas fa-robot"></i> ERC-8004</a>
+                <a href="/erc8004" target="_blank"><i class="fas fa-robot"></i> ERC-8004</a>
             </div>
         </div>
         <div class="nav-dropdown">
@@ -770,40 +769,33 @@ window.addEventListener('scroll', () => {
 });
 </script>
 <script>
-// Language toggle
-(function() {
-    function initLang() {
-        var zhBtn = document.getElementById('lang-zh-btn');
-        var enBtn = document.getElementById('lang-en-btn');
-        if (!zhBtn || !enBtn) return;
-        
-        function setLang(lang) {
-            if (lang === 'en') {
-                document.documentElement.classList.add('en-mode');
-                zhBtn.classList.remove('active');
-                enBtn.classList.add('active');
-            } else {
-                document.documentElement.classList.remove('en-mode');
-                zhBtn.classList.add('active');
-                enBtn.classList.remove('active');
-            }
-            localStorage.setItem('0xai-lang', lang);
-        }
-        
-        zhBtn.addEventListener('click', function() { setLang('zh'); });
-        enBtn.addEventListener('click', function() { setLang('en'); });
-        
-        // Restore saved language
-        var saved = localStorage.getItem('0xai-lang');
-        if (saved === 'en') setLang('en');
+
+
+<script>
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'lang-zh-btn') {
+        document.documentElement.classList.remove('en-mode');
+        document.getElementById('lang-zh-btn').classList.add('active');
+        document.getElementById('lang-en-btn').classList.remove('active');
+        localStorage.setItem('lang', 'zh');
     }
-    
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initLang);
-    } else {
-        initLang();
+    if (e.target && e.target.id === 'lang-en-btn') {
+        document.documentElement.classList.add('en-mode');
+        document.getElementById('lang-en-btn').classList.add('active');
+        document.getElementById('lang-zh-btn').classList.remove('active');
+        localStorage.setItem('lang', 'en');
+    }
+});
+(function() {
+    if (localStorage.getItem('lang') === 'en') {
+        document.documentElement.classList.add('en-mode');
+        var eb = document.getElementById('lang-en-btn');
+        var zb = document.getElementById('lang-zh-btn');
+        if (eb) eb.classList.add('active');
+        if (zb) zb.classList.remove('active');
     }
 })();
 </script>
+
 </body>
 </html>
