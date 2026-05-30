@@ -104,42 +104,7 @@
         }
         .nav-links a:hover { color: #fff; }
         .nav-links a:hover::after { width: 100%; }
-        
-        .lang-zh { display: inline; }
-        .lang-en { display: none; }
-        html.en-mode .lang-zh { display: none; }
-        html.en-mode .lang-en { display: inline; }
-        
-        .lang-toggle-btn {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 20px;
-            padding: 3px;
-            margin-left: 12px;
-        }
-        .lang-toggle-btn button {
-            background: transparent;
-            border: none;
-            color: rgba(255,255,255,0.4);
-            padding: 4px 12px;
-            border-radius: 16px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-        .lang-toggle-btn button.active {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 0 12px rgba(108,92,231,0.3);
-        }
-        .lang-toggle-btn button:hover:not(.active) {
-            color: rgba(255,255,255,0.7);
-        }
-.nav-cta {
+        .nav-cta {
             padding: 8px 24px;
             background: var(--gradient-1);
             color: #fff !important;
@@ -147,78 +112,8 @@
             font-weight: 600;
             transition: transform 0.2s !important;
         }
-        
-        .lang-zh { display: inline; }
-        .lang-en { display: none; }
-        html.en-mode .lang-zh { display: none; }
-        html.en-mode .lang-en { display: inline; }
-        
-        .lang-toggle-btn {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 20px;
-            padding: 3px;
-            margin-left: 12px;
-        }
-        .lang-toggle-btn button {
-            background: transparent;
-            border: none;
-            color: rgba(255,255,255,0.4);
-            padding: 4px 12px;
-            border-radius: 16px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-        .lang-toggle-btn button.active {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 0 12px rgba(108,92,231,0.3);
-        }
-        .lang-toggle-btn button:hover:not(.active) {
-            color: rgba(255,255,255,0.7);
-        }
-.nav-cta:hover { transform: scale(1.05) !important; }
-        
-        .lang-zh { display: inline; }
-        .lang-en { display: none; }
-        html.en-mode .lang-zh { display: none; }
-        html.en-mode .lang-en { display: inline; }
-        
-        .lang-toggle-btn {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 20px;
-            padding: 3px;
-            margin-left: 12px;
-        }
-        .lang-toggle-btn button {
-            background: transparent;
-            border: none;
-            color: rgba(255,255,255,0.4);
-            padding: 4px 12px;
-            border-radius: 16px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-        .lang-toggle-btn button.active {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 0 12px rgba(108,92,231,0.3);
-        }
-        .lang-toggle-btn button:hover:not(.active) {
-            color: rgba(255,255,255,0.7);
-        }
-.nav-cta::after { display: none !important; }
+        .nav-cta:hover { transform: scale(1.05) !important; }
+        .nav-cta::after { display: none !important; }
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -311,129 +206,7 @@
         .hero-stats .stat .num { font-size: 32px; font-weight: 800; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .hero-stats .stat .label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
-        
-        .pitch-section {
-            padding: 100px 48px;
-            position: relative; z-index: 1;
-        }
-        .pitch-container { max-width: 1100px; margin: 0 auto; }
-        .pitch-card {
-            background: var(--dark-2);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 24px; padding: 48px;
-            margin-bottom: 24px;
-            position: relative; overflow: hidden;
-        }
-        .pitch-card::before {
-            content: '';
-            position: absolute; top: 0; left: 0;
-            width: 4px; height: 100%;
-        }
-        .pitch-card.ai::before { background: var(--gradient-1); }
-        .pitch-card.web3::before { background: var(--gradient-4); }
-        .pitch-card .pitch-label {
-            display: inline-flex; align-items: center; gap: 6px;
-            font-size: 13px; font-weight: 600;
-            padding: 4px 14px; border-radius: 16px; margin-bottom: 16px;
-        }
-        .pitch-card .pitch-label.ai { background: rgba(108,92,231,0.15); color: #6C5CE7; }
-        .pitch-card .pitch-label.web3 { background: rgba(0,210,255,0.15); color: #00D2FF; }
-        .pitch-card h2 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
-        .pitch-card p { font-size: 16px; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px; }
-        .pitch-card .pitch-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px; margin-top: 24px;
-        }
-        .pitch-card .pitch-item {
-            background: rgba(255,255,255,0.03);
-            border-radius: 16px; padding: 24px;
-            border: 1px solid rgba(255,255,255,0.04);
-            transition: all 0.3s;
-        }
-        .pitch-card .pitch-item:hover {
-            border-color: rgba(108,92,231,0.15);
-            background: rgba(255,255,255,0.05);
-        }
-        .pitch-card .pitch-item h4 { font-size: 18px; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
-        .pitch-card .pitch-item h4 i { font-size: 20px; }
-        .pitch-card .pitch-item p { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; }
-        .pitch-card .pitch-item .pitch-link {
-            font-size: 14px; color: var(--secondary);
-            text-decoration: none; font-weight: 600;
-            display: inline-flex; align-items: center; gap: 6px;
-            transition: gap 0.3s;
-        }
-        .pitch-card .pitch-item .pitch-link:hover { gap: 10px; }
-        @media (max-width: 768px) {
-            .pitch-section { padding: 60px 20px; }
-            .pitch-card { padding: 28px 24px; }
-            .pitch-card h2 { font-size: 22px; }
-            .pitch-card .pitch-grid { grid-template-columns: 1fr; }
-        }
-
-
-        .pitch-section {
-            padding: 100px 48px;
-            position: relative; z-index: 1;
-        }
-        .pitch-container { max-width: 1100px; margin: 0 auto; }
-        .pitch-card {
-            background: var(--dark-2);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 24px; padding: 48px;
-            margin-bottom: 24px;
-            position: relative; overflow: hidden;
-        }
-        .pitch-card::before {
-            content: '';
-            position: absolute; top: 0; left: 0;
-            width: 4px; height: 100%;
-        }
-        .pitch-card.ai::before { background: var(--gradient-1); }
-        .pitch-card.web3::before { background: var(--gradient-4); }
-        .pitch-card .pitch-label {
-            display: inline-flex; align-items: center; gap: 6px;
-            font-size: 13px; font-weight: 600;
-            padding: 4px 14px; border-radius: 16px; margin-bottom: 16px;
-        }
-        .pitch-card .pitch-label.ai { background: rgba(108,92,231,0.15); color: #6C5CE7; }
-        .pitch-card .pitch-label.web3 { background: rgba(0,210,255,0.15); color: #00D2FF; }
-        .pitch-card h2 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
-        .pitch-card p { font-size: 16px; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px; }
-        .pitch-card .pitch-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px; margin-top: 24px;
-        }
-        .pitch-card .pitch-item {
-            background: rgba(255,255,255,0.03);
-            border-radius: 16px; padding: 24px;
-            border: 1px solid rgba(255,255,255,0.04);
-            transition: all 0.3s;
-        }
-        .pitch-card .pitch-item:hover {
-            border-color: rgba(108,92,231,0.15);
-            background: rgba(255,255,255,0.05);
-        }
-        .pitch-card .pitch-item h4 { font-size: 18px; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
-        .pitch-card .pitch-item h4 i { font-size: 20px; }
-        .pitch-card .pitch-item p { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; }
-        .pitch-card .pitch-item .pitch-link {
-            font-size: 14px; color: var(--secondary);
-            text-decoration: none; font-weight: 600;
-            display: inline-flex; align-items: center; gap: 6px;
-            transition: gap 0.3s;
-        }
-        .pitch-card .pitch-item .pitch-link:hover { gap: 10px; }
-        @media (max-width: 768px) {
-            .pitch-section { padding: 60px 20px; }
-            .pitch-card { padding: 28px 24px; }
-            .pitch-card h2 { font-size: 22px; }
-            .pitch-card .pitch-grid { grid-template-columns: 1fr; }
-        }
-
-/* ========== Section 通用 ========== */
+        /* ========== Section 通用 ========== */
         .section {
             padding: 100px 40px;
             position: relative;
@@ -529,194 +302,6 @@
         .project-card .card-link:hover { gap: 10px; }
 
         /* ========== 技术栈 ========== */
-        
-
-        .nav-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .nav-dropdown .dropdown-trigger {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-            padding: 8px 0;
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            cursor: pointer;
-        }
-        .nav-dropdown .dropdown-trigger::after {
-            content: '';
-            position: absolute; bottom: -4px; left: 0;
-            width: 0; height: 2px;
-            background: var(--gradient-1);
-            transition: width 0.3s;
-        }
-        .nav-dropdown .dropdown-trigger:hover { color: #fff; }
-        .nav-dropdown .dropdown-trigger:hover::after { width: 100%; }
-        .nav-dropdown:hover .dropdown-trigger { color: #fff; }
-        .nav-dropdown:hover .dropdown-trigger::after { width: 100%; }
-        .nav-dropdown:hover .dropdown-trigger i { transform: rotate(180deg); }
-        .nav-dropdown .dropdown-trigger i { transition: transform 0.3s; }
-        
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(18, 18, 42, 0.96);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(108, 92, 231, 0.15);
-            border-radius: 12px;
-            padding: 8px;
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.25s ease;
-            z-index: 200;
-            margin-top: 8px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-        }
-        .nav-dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            margin-top: 4px;
-        }
-        .dropdown-menu a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 8px;
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        .dropdown-menu a:hover {
-            background: rgba(108, 92, 231, 0.12);
-            color: #fff;
-        }
-        .dropdown-menu a i {
-            width: 20px;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        .category-header {
-            max-width: 1100px; margin: 0 auto 32px;
-            display: flex; align-items: center; gap: 14px;
-        }
-        .category-header .cat-badge {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 6px 20px; border-radius: 20px;
-            font-size: 14px; font-weight: 700; letter-spacing: 1px;
-        }
-        .category-header .cat-badge.ai { background: rgba(108,92,231,0.15); color: #6C5CE7; border: 1px solid rgba(108,92,231,0.2); }
-        .category-header .cat-badge.web3 { background: rgba(0,210,255,0.15); color: #00D2FF; border: 1px solid rgba(0,210,255,0.2); }
-        .category-header .cat-line {
-            flex: 1; height: 1px;
-            background: linear-gradient(90deg, rgba(108,92,231,0.3), transparent);
-        }
-
-        
-
-        .nav-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .nav-dropdown .dropdown-trigger {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-            padding: 8px 0;
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            cursor: pointer;
-        }
-        .nav-dropdown .dropdown-trigger::after {
-            content: '';
-            position: absolute; bottom: -4px; left: 0;
-            width: 0; height: 2px;
-            background: var(--gradient-1);
-            transition: width 0.3s;
-        }
-        .nav-dropdown .dropdown-trigger:hover { color: #fff; }
-        .nav-dropdown .dropdown-trigger:hover::after { width: 100%; }
-        .nav-dropdown:hover .dropdown-trigger { color: #fff; }
-        .nav-dropdown:hover .dropdown-trigger::after { width: 100%; }
-        .nav-dropdown:hover .dropdown-trigger i { transform: rotate(180deg); }
-        .nav-dropdown .dropdown-trigger i { transition: transform 0.3s; }
-        
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(18, 18, 42, 0.96);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(108, 92, 231, 0.15);
-            border-radius: 12px;
-            padding: 8px;
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.25s ease;
-            z-index: 200;
-            margin-top: 8px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-        }
-        .nav-dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            margin-top: 4px;
-        }
-        .dropdown-menu a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 8px;
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        .dropdown-menu a:hover {
-            background: rgba(108, 92, 231, 0.12);
-            color: #fff;
-        }
-        .dropdown-menu a i {
-            width: 20px;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        .category-header {
-            max-width: 1100px; margin: 0 auto 32px;
-            display: flex; align-items: center; gap: 14px;
-        }
-        .category-header .cat-badge {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 6px 20px; border-radius: 20px;
-            font-size: 14px; font-weight: 700; letter-spacing: 1px;
-        }
-        .category-header .cat-badge.ai { background: rgba(108,92,231,0.15); color: #6C5CE7; border: 1px solid rgba(108,92,231,0.2); }
-        .category-header .cat-badge.web3 { background: rgba(0,210,255,0.15); color: #00D2FF; border: 1px solid rgba(0,210,255,0.2); }
-        .category-header .cat-line {
-            flex: 1; height: 1px;
-            background: linear-gradient(90deg, rgba(108,92,231,0.3), transparent);
-        }
-
         .tech-section { background: var(--dark-2); }
         .tech-grid {
             display: grid;
@@ -837,7 +422,7 @@
                 <a href="/shop" target="_blank"><i class="fas fa-store"></i> <span class="lang-zh">优选商城</span><span class="lang-en">E-Shop</span></a>
                 <a href="/smartmenu/" target="_blank"><i class="fas fa-utensils"></i> Smart Menu</a>
                 <a href="https://github.com/sftgroup" target="_blank"><i class="fas fa-chart-line"></i> AItrader</a>
-                <a href="https://github.com/sftgroup" target="_blank"><i class="fas fa-robot"></i> ERC-8004</a>
+                <a href="http://43.163.105.172:8004" target="_blank"><i class="fas fa-robot"></i> ERC-8004</a>
             </div>
         </div>
         <div class="nav-dropdown">
@@ -866,7 +451,7 @@
             创新科技 · 驱动未来
         </div>
         <h1><span class="lang-zh">用代码构建<br>智能未来</span><span class="lang-en">Building<br>an Intelligent Future</span></h1>
-        <p><span class="lang-zh">0xAi 致力于 AI 与 Web3 前沿技术研发，从智能电商到去中心化身份协议，打造完整的产品生态</span><span class="lang-en">0xAi is dedicated to cutting-edge AI and Web3 technologies, building a complete product ecosystem from smart e-commerce to decentralized identity protocols.</span></p>
+        <p>0xAi 致力于 AI、Web3、量化交易等前沿技术研发，打造从电商到智能交易的完整产品生态</p>
         <div class="hero-buttons">
             <a href="#projects" class="btn-primary">探索项目 <i class="fas fa-arrow-right ms-2"></i></a>
             <a href="#contact" class="btn-outline">联系我们</a>
@@ -888,33 +473,11 @@
     </div>
 </section>
 
-
-<!-- Pitch Deck -->
-<section class="pitch-section" id="pitch">
-    <div class="pitch-container">
-        <h2 class="section-title">产品 <span>概览</span></h2>
-        <p class="section-subtitle">两大核心赛道：AI 驱动商业智能，Web3 赋能去中心化生态</p>
-
-        <div class="pitch-card ai">
-            <span class="pitch-label ai"><i class="fas fa-robot"></i> <span class="lang-zh">AI · 人工智能</span><span class="lang-en">AI · Artificial Intelligence</span></span>
-            <h2><span class="lang-zh">用 AI 重塑商业效率</span><span class="lang-en">Reshaping Business with AI</span></h2>
-            <p>从电商到智能点餐，再到量化交易，我们利用大模型与机器学习技术，为传统行业注入智能化能力，实现降本增效与体验升级。</p>
-            <div class="pitch-grid">
-                
-        </div>
-    </div>
-</section>
-
-    <!-- 项目展示 -->
+<!-- 项目展示 -->
 <section class="section" id="projects">
     <h2 class="section-title">我们的 <span>产品生态</span></h2>
     <p class="section-subtitle"><span class="lang-zh">0xAi 致力于 AI 与 Web3 前沿技术研发，从智能电商到去中心化身份协议，打造完整的产品生态</span><span class="lang-en">0xAi is dedicated to cutting-edge AI and Web3 technologies, building a complete product ecosystem from smart e-commerce to decentralized identity protocols.</span></p>
     
-    <!-- AI 产品 -->
-    <div class="category-header">
-        <span class="cat-badge ai"><i class="fas fa-robot"></i> AI 产品</span>
-        <div class="cat-line"></div>
-    </div>
     <div class="projects-grid">
         
         <!-- 优选商城 -->
@@ -928,7 +491,7 @@
                 <span>Web3</span>
             </div>
             <p>全功能电商系统，支持商品管理、订单流程、购物车，集成 USDT 加密货币充提币，Infura 自动监控链上到账。</p>
-            <a href="/shop" target="_blank" class="card-link">
+            <a href="http://43.163.105.172:5000/shop" target="_blank" class="card-link">
                 前往商城 <i class="fas fa-arrow-right"></i>
             </a>
         </div>
@@ -944,7 +507,7 @@
                 <span>PostgreSQL</span>
             </div>
             <p>AI 智能点餐系统，支持扫码点餐、AI 智能菜品推荐、商家管理后台、数据分析看板，提升餐饮运营效率。</p>
-            <a href="/smartmenu/" target="_blank" class="card-link">
+            <a href="http://43.163.105.172:3000" target="_blank" class="card-link">
                 用户端 <i class="fas fa-arrow-right"></i>
             </a>
         </div>
@@ -982,7 +545,36 @@
         </div>
 
         <!-- 管理后台 -->
-        
+        <div class="project-card">
+            <div class="card-icon orange"><i class="fas fa-cog"></i></div>
+            <h3>电商管理后台</h3>
+            <div class="card-tags">
+                <span>Vue 3</span>
+                <span>JWT</span>
+                <span>数据分析</span>
+                <span>审核系统</span>
+            </div>
+            <p>完整的电商管理后台，涵盖用户、商品、订单、充值提现审核、佣金管理、站点配置等一体化管理功能。</p>
+            <a href="http://43.163.105.172:5000/frontend" target="_blank" class="card-link">
+                进入后台 <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <!-- 更多 -->
+        <div class="project-card">
+            <div class="card-icon pink"><i class="fas fa-boxes"></i></div>
+            <h3>更多项目</h3>
+            <div class="card-tags">
+                <span>GitHub</span>
+                <span>开源</span>
+                <span>持续更新</span>
+            </div>
+            <p>持续研发更多创新产品，所有项目开源在 GitHub，欢迎 Star 关注我们的最新动态。</p>
+            <a href="https://github.com/sftgroup" target="_blank" class="card-link">
+                GitHub <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
 </section>
 
 <!-- 技术栈 -->
@@ -1142,33 +734,41 @@ window.addEventListener('scroll', () => {
     }
 });
 </script>
-
 <script>
 // Language toggle
-document.addEventListener('DOMContentLoaded', function() {
-    var zhBtn = document.getElementById('lang-zh-btn');
-    var enBtn = document.getElementById('lang-en-btn');
-    if (zhBtn && enBtn) {
-        zhBtn.addEventListener('click', function() {
-            document.documentElement.classList.remove('en-mode');
-            zhBtn.classList.add('active');
-            enBtn.classList.remove('active');
-            localStorage.setItem('0xai-lang', 'zh');
-        });
-        enBtn.addEventListener('click', function() {
-            document.documentElement.classList.add('en-mode');
-            enBtn.classList.add('active');
-            zhBtn.classList.remove('active');
-            localStorage.setItem('0xai-lang', 'en');
-        });
-        // Restore saved language
-        var savedLang = localStorage.getItem('0xai-lang');
-        if (savedLang === 'en') {
-            enBtn.click();
+(function() {
+    function initLang() {
+        var zhBtn = document.getElementById('lang-zh-btn');
+        var enBtn = document.getElementById('lang-en-btn');
+        if (!zhBtn || !enBtn) return;
+        
+        function setLang(lang) {
+            if (lang === 'en') {
+                document.documentElement.classList.add('en-mode');
+                zhBtn.classList.remove('active');
+                enBtn.classList.add('active');
+            } else {
+                document.documentElement.classList.remove('en-mode');
+                zhBtn.classList.add('active');
+                enBtn.classList.remove('active');
+            }
+            localStorage.setItem('0xai-lang', lang);
         }
+        
+        zhBtn.addEventListener('click', function() { setLang('zh'); });
+        enBtn.addEventListener('click', function() { setLang('en'); });
+        
+        // Restore saved language
+        var saved = localStorage.getItem('0xai-lang');
+        if (saved === 'en') setLang('en');
     }
-});
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLang);
+    } else {
+        initLang();
+    }
+})();
 </script>
-
 </body>
 </html>
