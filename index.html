@@ -104,7 +104,42 @@
         }
         .nav-links a:hover { color: #fff; }
         .nav-links a:hover::after { width: 100%; }
-        .nav-cta {
+        
+        .lang-zh { display: inline; }
+        .lang-en { display: none; }
+        html.en-mode .lang-zh { display: none; }
+        html.en-mode .lang-en { display: inline; }
+        
+        .lang-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 3px;
+            margin-left: 12px;
+        }
+        .lang-toggle-btn button {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .lang-toggle-btn button.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(108,92,231,0.3);
+        }
+        .lang-toggle-btn button:hover:not(.active) {
+            color: rgba(255,255,255,0.7);
+        }
+.nav-cta {
             padding: 8px 24px;
             background: var(--gradient-1);
             color: #fff !important;
@@ -112,8 +147,78 @@
             font-weight: 600;
             transition: transform 0.2s !important;
         }
-        .nav-cta:hover { transform: scale(1.05) !important; }
-        .nav-cta::after { display: none !important; }
+        
+        .lang-zh { display: inline; }
+        .lang-en { display: none; }
+        html.en-mode .lang-zh { display: none; }
+        html.en-mode .lang-en { display: inline; }
+        
+        .lang-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 3px;
+            margin-left: 12px;
+        }
+        .lang-toggle-btn button {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .lang-toggle-btn button.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(108,92,231,0.3);
+        }
+        .lang-toggle-btn button:hover:not(.active) {
+            color: rgba(255,255,255,0.7);
+        }
+.nav-cta:hover { transform: scale(1.05) !important; }
+        
+        .lang-zh { display: inline; }
+        .lang-en { display: none; }
+        html.en-mode .lang-zh { display: none; }
+        html.en-mode .lang-en { display: inline; }
+        
+        .lang-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 3px;
+            margin-left: 12px;
+        }
+        .lang-toggle-btn button {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .lang-toggle-btn button.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(108,92,231,0.3);
+        }
+        .lang-toggle-btn button:hover:not(.active) {
+            color: rgba(255,255,255,0.7);
+        }
+.nav-cta::after { display: none !important; }
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -726,16 +831,27 @@
         0xAi
     </a>
     <div class="nav-links" id="navLinks">
-        <a href="#projects">项目</a>
-        <a href="#tech">技术</a>
         <div class="nav-dropdown">
-            <a href="#" class="dropdown-trigger">白皮书 <i class="fas fa-chevron-down" style="font-size:10px;margin-left:3px;"></i></a>
+            <a href="#" class="dropdown-trigger"><span class="lang-zh">项目</span><span class="lang-en">Projects</span> <i class="fas fa-chevron-down" style="font-size:10px;margin-left:3px;"></i></a>
             <div class="dropdown-menu">
+                <a href="/shop" target="_blank"><i class="fas fa-store"></i> <span class="lang-zh">优选商城</span><span class="lang-en">E-Shop</span></a>
                 <a href="/smartmenu/" target="_blank"><i class="fas fa-utensils"></i> Smart Menu</a>
-                <a href="/shop" target="_blank"><i class="fas fa-store"></i> 优选商城</a>
+                <a href="https://github.com/sftgroup" target="_blank"><i class="fas fa-chart-line"></i> AItrader</a>
+                <a href="https://github.com/sftgroup" target="_blank"><i class="fas fa-robot"></i> ERC-8004</a>
             </div>
         </div>
-        <a href="#contact" class="nav-cta">联系我们</a>
+        <div class="nav-dropdown">
+            <a href="#" class="dropdown-trigger"><span class="lang-zh">白皮书</span><span class="lang-en">Whitepapers</span> <i class="fas fa-chevron-down" style="font-size:10px;margin-left:3px;"></i></a>
+            <div class="dropdown-menu">
+                <a href="/smartmenu-whitepaper" target="_blank"><i class="fas fa-utensils"></i> Smart Menu</a>
+                <a href="/shop" target="_blank"><i class="fas fa-store"></i> <span class="lang-zh">优选商城</span><span class="lang-en">E-Shop</span></a>
+            </div>
+        </div>
+        <a href="#contact" class="nav-cta"><span class="lang-zh">联系我们</span><span class="lang-en">Contact</span></a>
+        <div class="lang-toggle-btn">
+            <button id="lang-zh-btn" class="active">中文</button>
+            <button id="lang-en-btn">EN</button>
+        </div>
     </div>
     <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')">
         <i class="fas fa-bars"></i>
@@ -749,8 +865,8 @@
             <i class="fas fa-cube"></i>
             创新科技 · 驱动未来
         </div>
-        <h1>用代码构建<br>智能未来</h1>
-        <p>0xAi 致力于 AI 与 Web3 前沿技术研发，从智能电商到去中心化身份协议，打造完整的产品生态</p>
+        <h1><span class="lang-zh">用代码构建<br>智能未来</span><span class="lang-en">Building<br>an Intelligent Future</span></h1>
+        <p><span class="lang-zh">0xAi 致力于 AI 与 Web3 前沿技术研发，从智能电商到去中心化身份协议，打造完整的产品生态</span><span class="lang-en">0xAi is dedicated to cutting-edge AI and Web3 technologies, building a complete product ecosystem from smart e-commerce to decentralized identity protocols.</span></p>
         <div class="hero-buttons">
             <a href="#projects" class="btn-primary">探索项目 <i class="fas fa-arrow-right ms-2"></i></a>
             <a href="#contact" class="btn-outline">联系我们</a>
@@ -758,15 +874,15 @@
         <div class="hero-stats">
             <div class="stat">
                 <div class="num">10+</div>
-                <div class="label">产品模块</div>
+                <div class="label"><span class="lang-zh">产品模块</span><span class="lang-en">Products</span></div>
             </div>
             <div class="stat">
                 <div class="num">5</div>
-                <div class="label">核心系统</div>
+                <div class="label"><span class="lang-zh">核心系统</span><span class="lang-en">Core Systems</span></div>
             </div>
             <div class="stat">
                 <div class="num">100%</div>
-                <div class="label">自主研发</div>
+                <div class="label"><span class="lang-zh">自主研发</span><span class="lang-en">Self-Developed</span></div>
             </div>
         </div>
     </div>
@@ -780,8 +896,8 @@
         <p class="section-subtitle">两大核心赛道：AI 驱动商业智能，Web3 赋能去中心化生态</p>
 
         <div class="pitch-card ai">
-            <span class="pitch-label ai"><i class="fas fa-robot"></i> AI · 人工智能</span>
-            <h2>用 AI 重塑商业效率</h2>
+            <span class="pitch-label ai"><i class="fas fa-robot"></i> <span class="lang-zh">AI · 人工智能</span><span class="lang-en">AI · Artificial Intelligence</span></span>
+            <h2><span class="lang-zh">用 AI 重塑商业效率</span><span class="lang-en">Reshaping Business with AI</span></h2>
             <p>从电商到智能点餐，再到量化交易，我们利用大模型与机器学习技术，为传统行业注入智能化能力，实现降本增效与体验升级。</p>
             <div class="pitch-grid">
                 
@@ -792,7 +908,7 @@
     <!-- 项目展示 -->
 <section class="section" id="projects">
     <h2 class="section-title">我们的 <span>产品生态</span></h2>
-    <p class="section-subtitle">0xAi 致力于 AI 与 Web3 前沿技术研发，从智能电商到去中心化身份协议，打造完整的产品生态</p>
+    <p class="section-subtitle"><span class="lang-zh">0xAi 致力于 AI 与 Web3 前沿技术研发，从智能电商到去中心化身份协议，打造完整的产品生态</span><span class="lang-en">0xAi is dedicated to cutting-edge AI and Web3 technologies, building a complete product ecosystem from smart e-commerce to decentralized identity protocols.</span></p>
     
     <!-- AI 产品 -->
     <div class="category-header">
@@ -1026,5 +1142,33 @@ window.addEventListener('scroll', () => {
     }
 });
 </script>
+
+<script>
+// Language toggle
+document.addEventListener('DOMContentLoaded', function() {
+    var zhBtn = document.getElementById('lang-zh-btn');
+    var enBtn = document.getElementById('lang-en-btn');
+    if (zhBtn && enBtn) {
+        zhBtn.addEventListener('click', function() {
+            document.documentElement.classList.remove('en-mode');
+            zhBtn.classList.add('active');
+            enBtn.classList.remove('active');
+            localStorage.setItem('0xai-lang', 'zh');
+        });
+        enBtn.addEventListener('click', function() {
+            document.documentElement.classList.add('en-mode');
+            enBtn.classList.add('active');
+            zhBtn.classList.remove('active');
+            localStorage.setItem('0xai-lang', 'en');
+        });
+        // Restore saved language
+        var savedLang = localStorage.getItem('0xai-lang');
+        if (savedLang === 'en') {
+            enBtn.click();
+        }
+    }
+});
+</script>
+
 </body>
 </html>
