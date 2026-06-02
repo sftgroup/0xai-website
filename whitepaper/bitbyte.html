@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bitbyte — Uniswap V4 DEX</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans TC',sans-serif;background:#0a0b1e;color:#e4e4e4;font-size:18px;line-height:1.8}
+#content-zh,#content-en{display:none}
+body.show-zh #content-zh{display:block}
+body.show-en #content-en{display:block}
+.container{max-width:1000px;margin:0 auto;padding:0 24px}
+.hero{background:linear-gradient(135deg,#0a0b1e 0%,#1a4a2a 50%,#0a0b1e 100%);padding:80px 0 60px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid rgba(60,200,100,.15)}
+.hero h1{font-size:3.2em;font-weight:800;background:linear-gradient(135deg,#68d391,#38a169,#68d391);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.hero .sub{color:#a0aec0;font-size:1.15em}
+.hero .tagline{color:#6b7a9f;font-size:.9em;margin-top:4px}
+.lang-toggle{position:fixed;top:20px;right:24px;z-index:100;display:flex;gap:2px;background:rgba(60,200,100,.12);border:1px solid rgba(60,200,100,.25);border-radius:24px;padding:5px 3px;backdrop-filter:blur(10px)}
+.lang-toggle button{background:transparent;border:none;color:#6b7a9f;padding:5px 16px;border-radius:18px;cursor:pointer;font-size:.85em;transition:all .2s}
+.lang-toggle button.active{background:rgba(60,200,100,.3);color:#68d391;font-weight:600}
+.badge{display:inline-block;background:rgba(60,200,100,.12);color:#68d391;border:1px solid rgba(60,200,100,.25);border-radius:20px;padding:5px 18px;font-size:.8em;margin-bottom:18px}
+.section{padding:60px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sec-title{font-size:1.55em;font-weight:700;color:#38a169;margin-bottom:32px;text-align:center}
+.pain-block{background:linear-gradient(135deg,rgba(60,200,100,.06),rgba(60,200,100,.01));border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;margin-bottom:18px}
+.pain-block h3{color:#fff;font-size:1.1em;margin-bottom:14px}
+.pain-block .scene{color:#e53e3e;font-size:.95em;padding-left:22px;position:relative;margin-bottom:4px}
+.pain-block .scene::before{content:'❌';position:absolute;left:0}
+.pain-block .solution{color:#68d391;font-size:.95em;padding-left:22px;position:relative}
+.pain-block .solution::before{content:'✅';position:absolute;left:0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;transition:all .3s}
+.card:hover{border-color:rgba(60,200,100,.3);transform:translateY(-2px)}
+.card-ico{font-size:2em;margin-bottom:10px}
+.card h4{color:#fff;font-size:1.05em;margin-bottom:10px}
+.card p{color:#a0aec0;font-size:.9em;line-height:1.7}
+.card .result{color:#68d391;font-weight:600;font-size:.85em;margin-top:10px}
+.stat-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin:36px 0}
+.stat-item{text-align:center;padding:24px 28px;background:rgba(60,200,100,.05);border-radius:12px;border:1px solid rgba(60,200,100,.1);min-width:130px}
+.stat-num{font-size:2em;font-weight:800;color:#68d391}
+.stat-label{font-size:.8em;color:#6b7a9f;margin-top:4px}
+.roadmap-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;background:rgba(255,255,255,.02);border-radius:10px;padding:18px}
+.roadmap-item .tag{background:rgba(60,200,100,.12);color:#68d391;border-radius:6px;padding:3px 12px;font-size:.8em;white-space:nowrap;flex-shrink:0}
+.roadmap-item .desc{color:#a0aec0;font-size:.9em}
+.footer{text-align:center;padding:36px 0;color:#4a5568;font-size:.85em}
+@media(max-width:768px){body{font-size:16px}.hero h1{font-size:2.2em}.grid-2{grid-template-columns:1fr}.lang-toggle{top:10px;right:10px}.lang-toggle button{padding:4px 12px}}
+</style></head>
+<body class="show-zh">
+
+<div class="lang-toggle">
+<button onclick="switchLang('zh')" id="btn-zh" class="active">繁中</button>
+<button onclick="switchLang('en')" id="btn-en">EN</button>
+</div>
+<script>
+function switchLang(lang) {
+document.body.className = lang === 'zh' ? 'show-zh' : 'show-en';
+document.getElementById('btn-zh').className = lang === 'zh' ? 'active' : '';
+document.getElementById('btn-en').className = lang === 'en' ? 'active' : '';
+}
+</script>
+
+<div id="content-zh">
+<div class="hero"><div class="container">
+<div class="badge">📋 產品白皮書 · V1.0</div><h1>Bitbyte</h1>
+<div class="sub">Uniswap V4 去中心化交易所</div>
+<div class="tagline">用 CEX 等級的交易工具，在 DEX 裡自由兌換</div>
+</div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">😫 你的真實困境</div>
+<div class="pain-block"><h3>💱 大額交易滑點太高</h3><div class="scene">在傳統 AMM 換 10 萬 U，滑點吃掉幾百上千。流動性深度不夠，大額交易想都不敢想。</div><div class="solution">Uniswap V4 架構 + Hook 機制最佳化交易執行，大幅減少大額交易的滑點損失。</div></div>
+<div class="pain-block"><h3>⚙️ DEX 功能太單一</h3><div class="scene">大部分 DEX 只支援即時兌換——沒有限價單、沒有止損。想等某個價格再買？24 小時盯盤。</div><div class="solution">限價單 + 停損停利透過 Hook 實現。設定一次，自動執行，不用盯盤。</div></div>
+<div class="pain-block"><h3>🧪 測試網工具匱乏</h3><div class="scene">開發者想調試交易功能，測試網的 DEX 要麼功能不全、要麼停了。只能去主網花錢試錯。</div><div class="solution">Sepolia 全功能部署，零成本開發和測試。所有功能先練熟再上主網。</div></div>
+<div class="pain-block"><h3>📊 缺乏交易輔助資料</h3><div class="scene">想看看 K 線圖？想看 TVL 和交易量？大部分 DEX 只給你一個兌換面板，沒了。</div><div class="solution">內建 K 線圖表 + 分析儀表板 + 流動性池資訊，交易決策有資料支撐。</div></div>
+<div class="stat-row">
+<div class="stat-item"><div class="stat-num">4</div><div class="stat-label">種代幣互換</div></div>
+<div class="stat-item"><div class="stat-num">✅</div><div class="stat-label">限價單+停損停利</div></div>
+<div class="stat-item"><div class="stat-num">📊</div><div class="stat-label">K 線+分析儀表板</div></div>
+<div class="stat-item"><div class="stat-num">Sepolia</div><div class="stat-label">零成本測試</div></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🎯 你能得到的結果</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🔄</div><h4>一鍵兌換，四種代幣任意換</h4><p>TUSDC / TETH / TWBTC / TDAI 隨意互換。連接錢包自動載入餘額和匯率。私鑰自己管。</p><p class="result">→ 比 CEX 還快，而且你自己管錢</p></div>
+<div class="card"><div class="card-ico">📉</div><h4>限價單：設好價格自動成交</h4><p>設定目標價格，Hook 自動監控市場。價格到了自動執行。上班、睡覺都不耽誤。</p><p class="result">→ 把「等跌到位」變成自動化</p></div>
+<div class="card"><div class="card-ico">🛑</div><h4>停損停利：自動風控</h4><p>設定停損價和停利價，觸發自動賣出。再也不用擔心睡著了爆倉。</p><p class="result">→ 風險控制自動化</p></div>
+<div class="card"><div class="card-ico">🏊</div><h4>流動性池：賺手續費</h4><p>添加流動性到交易對，獲得交易手續費分成。池資訊和你的持倉一目了然。</p><p class="result">→ 交易員和做市商，你都能做</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">💡 為什麼有效？</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🏗️</div><h4>Uniswap V4 架構</h4><p>繼承已審計的 Uniswap V4 框架。安全性有保障。</p></div>
+<div class="card"><div class="card-ico">🪝</div><h4>Hook 驅動進階交易</h4><p>限價單、停損停利全部透過 Hook 實現。不修改核心合約，安全可靠。</p></div>
+<div class="card"><div class="card-ico">🔒</div><h4>代幣白名單</h4><p>僅預設受信任代幣，防範假幣和釣魚攻擊。</p></div>
+<div class="card"><div class="card-ico">🧪</div><h4>零成本測試</h4><p>Sepolia 全功能可用。開發、調試、驗證，一毛錢不花。</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🚀 路線圖</div>
+<div class="roadmap-item"><span class="tag">✅</span><div class="desc">代幣兌換 + 限價單 + K 線 + 流動性池</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V1.5</span><div class="desc">Subgraph 即時鏈上資料分析</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.0</span><div class="desc">主網部署（以太坊 + BSC）</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.5</span><div class="desc">跨鏈橋 + 聚合交易</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V3.0</span><div class="desc">永續合約 + 槓桿交易</div></div>
+</div></div>
+<div class="footer">© 2026 Bitbyte · Uniswap V4 DEX · Sepolia Testnet</div>
+</div>
+
+<div id="content-en">
+<div class="hero"><div class="container">
+<div class="badge">📋 Technical Whitepaper · V1.0</div><h1>Bitbyte</h1>
+<div class="sub">Uniswap V4 DEX</div>
+<div class="tagline">CEX-grade tools, DEX-level freedom</div>
+</div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">😫 Your Real Struggle</div>
+<div class="pain-block"><h3>💱 Slippage Nightmare</h3><div class="scene">Swap 100K USDT on a regular AMM? Slippage costs you a fortune. Liquidity depth is a joke.</div><div class="solution">Uniswap V4 + Hook-based execution optimization. Minimize slippage on large trades.</div></div>
+<div class="pain-block"><h3>⚙️ Too Basic</h3><div class="scene">Instant swap only. No limit orders, no stop-loss. Want to buy at a specific price? Stare at the screen 24/7.</div><div class="solution">Limit orders + stop-loss via Hooks. Set it once, executed automatically.</div></div>
+<div class="pain-block"><h3>🧪 Dev Tool Drought</h3><div class="scene">DEXes on testnet? Either incomplete or abandoned. Devs pay real gas for trial and error.</div><div class="solution">Full-featured on Sepolia. Zero-cost dev environment. Master it before mainnet.</div></div>
+<div class="pain-block"><h3>📊 No Data Support</h3><div class="scene">Want a chart? TVL? Trading volume? Most DEXes give you a swap box and nothing else.</div><div class="solution">Built-in candlestick charts + analytics dashboard + liquidity pool info. Data-driven trading.</div></div>
+<div class="stat-row">
+<div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Token Swaps</div></div>
+<div class="stat-item"><div class="stat-num">✅</div><div class="stat-label">Advanced Orders</div></div>
+<div class="stat-item"><div class="stat-num">📊</div><div class="stat-label">Charts & Analytics</div></div>
+<div class="stat-item"><div class="stat-num">Sepolia</div><div class="stat-label">Free Testing</div></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🎯 What You Get</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🔄</div><h4>One-Click Swaps</h4><p>TUSDC, TETH, TWBTC, TDAI — any pair. Auto-load balance & rate. Self-custody, no CEX trust needed.</p><p class="result">→ Faster than CEX, with self-custody</p></div>
+<div class="card"><div class="card-ico">📉</div><h4>Limit Orders On-Chain</h4><p>Set a target price, Hook monitors the market. Executes automatically. Sleep or work — it handles it.</p><p class="result">→ No more manual price watching</p></div>
+<div class="card"><div class="card-ico">🛑</div><h4>Stop-Loss & Take-Profit</h4><p>Set stop-loss and take-profit. Auto-sell when triggered. Sleep easy.</p><p class="result">→ Risk management on autopilot</p></div>
+<div class="card"><div class="card-ico">🏊</div><h4>Liquidity Pools</h4><p>Add liquidity, earn swap fees. Pool info and your positions at a glance.</p><p class="result">→ Trader or LP — your choice</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">💡 Why It Works</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🏗️</div><h4>Battle-Tested Foundation</h4><p>Inherits audited Uniswap V4. Security guaranteed.</p></div>
+<div class="card"><div class="card-ico">🪝</div><h4>Hook-Powered</h4><p>Limit orders, stop-loss via Hooks. No core contract modifications.</p></div>
+<div class="card"><div class="card-ico">🔒</div><h4>Token Whitelist</h4><p>Only pre-approved tokens. No scams, no fakes.</p></div>
+<div class="card"><div class="card-ico">🧪</div><h4>Free Testing</h4><p>Full Sepolia support. Dev, debug, verify — zero cost.</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🚀 Roadmap</div>
+<div class="roadmap-item"><span class="tag">✅</span><div class="desc">Swaps + Limit orders + Charts + Liquidity pools</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V1.5</span><div class="desc">Subgraph real-time on-chain analytics</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.0</span><div class="desc">Mainnet deployment (Ethereum + BSC)</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.5</span><div class="desc">Cross-chain bridge + aggregated trading</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V3.0</span><div class="desc">Perpetual contracts + leveraged trading</div></div>
+</div></div>
+<div class="footer">© 2026 Bitbyte · Uniswap V4 DEX · Sepolia Testnet</div>
+</div>
+</body></html>

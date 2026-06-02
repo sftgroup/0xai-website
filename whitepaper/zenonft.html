@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ZenoNFT — NFT 鑄造與交易市場</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans TC',sans-serif;background:#0a0b1e;color:#e4e4e4;font-size:18px;line-height:1.8}
+#content-zh,#content-en{display:none}
+body.show-zh #content-zh{display:block}
+body.show-en #content-en{display:block}
+.container{max-width:1000px;margin:0 auto;padding:0 24px}
+.hero{background:linear-gradient(135deg,#0a0b1e 0%,#5c1a3a 50%,#0a0b1e 100%);padding:80px 0 60px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid rgba(230,70,140,.15)}
+.hero h1{font-size:3.2em;font-weight:800;background:linear-gradient(135deg,#ff6b9d,#e6468c,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.hero .sub{color:#a0aec0;font-size:1.15em}
+.hero .tagline{color:#6b7a9f;font-size:.9em;margin-top:4px}
+.lang-toggle{position:fixed;top:20px;right:24px;z-index:100;display:flex;gap:2px;background:rgba(230,70,140,.12);border:1px solid rgba(230,70,140,.25);border-radius:24px;padding:5px 3px;backdrop-filter:blur(10px)}
+.lang-toggle button{background:transparent;border:none;color:#6b7a9f;padding:5px 16px;border-radius:18px;cursor:pointer;font-size:.85em;transition:all .2s}
+.lang-toggle button.active{background:rgba(230,70,140,.3);color:#ff6b9d;font-weight:600}
+.badge{display:inline-block;background:rgba(230,70,140,.12);color:#ff6b9d;border:1px solid rgba(230,70,140,.25);border-radius:20px;padding:5px 18px;font-size:.8em;margin-bottom:18px}
+.section{padding:60px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sec-title{font-size:1.55em;font-weight:700;color:#e6468c;margin-bottom:32px;text-align:center}
+.pain-block{background:linear-gradient(135deg,rgba(230,70,140,.06),rgba(230,70,140,.01));border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;margin-bottom:18px}
+.pain-block h3{color:#fff;font-size:1.1em;margin-bottom:14px}
+.pain-block .scene{color:#e53e3e;font-size:.95em;padding-left:22px;position:relative;margin-bottom:4px}
+.pain-block .scene::before{content:'❌';position:absolute;left:0}
+.pain-block .solution{color:#ff6b9d;font-size:.95em;padding-left:22px;position:relative}
+.pain-block .solution::before{content:'✅';position:absolute;left:0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;transition:all .3s}
+.card:hover{border-color:rgba(230,70,140,.3);transform:translateY(-2px)}
+.card-ico{font-size:2em;margin-bottom:10px}
+.card h4{color:#fff;font-size:1.05em;margin-bottom:10px}
+.card p{color:#a0aec0;font-size:.9em;line-height:1.7}
+.card .result{color:#ff6b9d;font-weight:600;font-size:.85em;margin-top:10px}
+.stat-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin:36px 0}
+.stat-item{text-align:center;padding:24px 28px;background:rgba(230,70,140,.05);border-radius:12px;border:1px solid rgba(230,70,140,.1);min-width:130px}
+.stat-num{font-size:2em;font-weight:800;color:#ff6b9d}
+.stat-label{font-size:.8em;color:#6b7a9f;margin-top:4px}
+.roadmap-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;background:rgba(255,255,255,.02);border-radius:10px;padding:18px}
+.roadmap-item .tag{background:rgba(230,70,140,.12);color:#ff6b9d;border-radius:6px;padding:3px 12px;font-size:.8em;white-space:nowrap;flex-shrink:0}
+.roadmap-item .desc{color:#a0aec0;font-size:.9em}
+.footer{text-align:center;padding:36px 0;color:#4a5568;font-size:.85em}
+@media(max-width:768px){body{font-size:16px}.hero h1{font-size:2.2em}.grid-2{grid-template-columns:1fr}.lang-toggle{top:10px;right:10px}.lang-toggle button{padding:4px 12px}}
+</style></head>
+<body class="show-zh">
+
+<div class="lang-toggle">
+<button onclick="switchLang('zh')" id="btn-zh" class="active">繁中</button>
+<button onclick="switchLang('en')" id="btn-en">EN</button>
+</div>
+<script>
+function switchLang(lang) {
+document.body.className = lang === 'zh' ? 'show-zh' : 'show-en';
+document.getElementById('btn-zh').className = lang === 'zh' ? 'active' : '';
+document.getElementById('btn-en').className = lang === 'en' ? 'active' : '';
+}
+</script>
+
+<div id="content-zh">
+<div class="hero"><div class="container">
+<div class="badge">📋 產品白皮書 · V1.0</div><h1>ZenoNFT</h1>
+<div class="sub">NFT 鑄造與交易市場</div>
+<div class="tagline">把 NFT 系列從 3 天的工作，變成 1 次交易</div>
+</div></div>
+<div class="section"><div class="container">
+<div class="sec-title">😫 你的真實困境</div>
+<div class="pain-block"><h3>🏗️ 部署 NFT 系列太複雜</h3><div class="scene">想發 NFT 系列？寫合約、部署、配元資料、對接市場、測試……沒經驗的開發者至少花 3 天。</div><div class="solution">Factory 合約一鍵部署 + 批次鑄造，1 次交易完成。從 3 天變成 5 分鐘。</div></div>
+<div class="pain-block"><h3>💸 測試網工具極其匱乏</h3><div class="scene">大多 NFT 市場只關注主網。開發者想測試功能，只能在主網花錢試錯。</div><div class="solution">Sepolia 全功能部署，零成本完成所有測試。確認無誤再切換到主網。</div></div>
+<div class="pain-block"><h3>🔒 SBT 支援幾乎空白</h3><div class="scene">想做 SBT（畢業證書、會員卡、成就徽章）？主流市場不支援不可轉讓的 NFT。</div><div class="solution">ZenoNFT 原生支援 Soulbound Token 的建立和管理，一鍵開啟。</div></div>
+<div class="pain-block"><h3>📦 批次鑄造費時費力</h3><div class="scene">想一次鑄造幾十個 NFT？主流市場讓你一個一個操作，每筆 gas 費單獨交。</div><div class="solution">一次交易最多鑄造 50 枚 NFT，gas 省 50 倍。還有 Deploy+BatchMint 一體化方案。</div></div>
+<div class="stat-row">
+<div class="stat-item"><div class="stat-num">1</div><div class="stat-label">次交易部署+鑄造</div></div>
+<div class="stat-item"><div class="stat-num">50</div><div class="stat-label">枚/次批次上限</div></div>
+<div class="stat-item"><div class="stat-num">5</div><div class="stat-label">條 EVM 鏈</div></div>
+<div class="stat-item"><div class="stat-num">Sepolia</div><div class="stat-label">零成本測試</div></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🎯 你能得到的結果</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🏭</div><h4>1 次交易 = 一個完整系列</h4><p>名稱、最大供應、價格、版稅、SBT 開關——所有參數一次配置，一次交易全部完成。</p><p class="result">→ 從 3 天到 5 分鐘</p></div>
+<div class="card"><div class="card-ico">🛒</div><h4>完整市場功能不縮水</h4><p>定價出售、拍賣、出價、版稅分配、排行榜——傳統市場全部功能。支援 5 條 EVM 鏈。</p><p class="result">→ 功能比肩大平台，門檻低 100 倍</p></div>
+<div class="card"><div class="card-ico">🔒</div><h4>Soulbound 天生支援</h4><p>開啟 SBT 模式後 NFT 不可轉讓。適合畢業證書、會員卡、成就徽章。打開開關就好。</p><p class="result">→ 解鎖 SBT 賽道新品類</p></div>
+<div class="card"><div class="card-ico">🖼️</div><h4>IPFS 永久儲存</h4><p>圖片和元資料透過 Pinata IPFS 儲存，不可篡改、永久存在。即使 ZenoNFT 下線資料依然完好。</p><p class="result">→ 創作永久保存</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">💡 為什麼有效？</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🛡️</div><h4>安全第一</h4><p>OpenZeppelin 標準庫 + 防重入攻擊 + 權限管理。所有合約已在 Sepolia 開源驗證。</p></div>
+<div class="card"><div class="card-ico">⚡</div><h4>Factory 模式</h4><p>一個 Factory 合約統一管理所有系列的部署和索引。標準統一、成本最低。</p></div>
+<div class="card"><div class="card-ico">🌐</div><h4>5 鏈架構</h4><p>支援 Ethereum / BSC / Polygon / Arbitrum / Avalanche。目前 Sepolia 零成本測試。</p></div>
+<div class="card"><div class="card-ico">🎨</div><h4>內建版稅分配</h4><p>定價出售/拍賣成交時自動計算並分配版稅給創作者。創作者經濟不是空話。</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🚀 路線圖</div>
+<div class="roadmap-item"><span class="tag">✅</span><div class="desc">系列部署 + 鑄造 + 交易 + 拍賣 + 排行榜</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V1.5</span><div class="desc">Collection Detail Page（地板價 + 交易量）</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.0</span><div class="desc">主網部署（Ethereum Mainnet）</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.5</span><div class="desc">跨鏈橋接 NFT</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V3.0</span><div class="desc">Lazy Minting + 版稅市場分析</div></div>
+</div></div>
+<div class="footer">© 2026 ZenoNFT · NFT Marketplace on Sepolia Testnet</div>
+</div>
+
+<div id="content-en">
+<div class="hero"><div class="container">
+<div class="badge">📋 Technical Whitepaper · V1.0</div><h1>ZenoNFT</h1>
+<div class="sub">NFT Marketplace on Sepolia</div>
+<div class="tagline">From 3 days of work to 1 transaction</div>
+</div></div>
+<div class="section"><div class="container">
+<div class="sec-title">😫 Your Real Struggle</div>
+<div class="pain-block"><h3>🏗️ Deployment Nightmare</h3><div class="scene">Write contracts, deploy, metadata, marketplace integration, test. For most devs: 3+ days.</div><div class="solution">Factory contract: one-click deploy + batch mint in 1 transaction. From 3 days to 5 minutes.</div></div>
+<div class="pain-block"><h3>💸 Testnet Tool Drought</h3><div class="scene">Most marketplaces focus on mainnet. Devs testing features? Pay real gas for every mistake.</div><div class="solution">Full-featured on Sepolia. Test everything for free before going live.</div></div>
+<div class="pain-block"><h3>🔒 SBT? Good Luck</h3><div class="scene">Soulbound Tokens? Most marketplaces don't support non-transferable NFTs at all.</div><div class="solution">Native SBT creation and management. One toggle. Certificates, memberships, achievements — easy.</div></div>
+<div class="pain-block"><h3>📦 Batch Minting Hell</h3><div class="scene">50 NFTs = 50 individual transactions with 50× gas fees. Painful.</div><div class="solution">Up to 50 NFTs in one transaction — 50× gas savings. Deploy+BatchMint does it all in one step.</div></div>
+<div class="stat-row">
+<div class="stat-item"><div class="stat-num">1</div><div class="stat-label">Tx to Deploy+Mint</div></div>
+<div class="stat-item"><div class="stat-num">50</div><div class="stat-label">Batch Limit</div></div>
+<div class="stat-item"><div class="stat-num">5</div><div class="stat-label">EVM Chains</div></div>
+<div class="stat-item"><div class="stat-num">Sepolia</div><div class="stat-label">Free Testing</div></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🎯 What You Get</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🏭</div><h4>One Tx = Full Collection</h4><p>Name, supply, price, royalty, SBT toggle — all configured in one transaction.</p><p class="result">→ From 3 days to 5 minutes</p></div>
+<div class="card"><div class="card-ico">🛒</div><h4>Full Marketplace</h4><p>Fixed price, auction, offers, royalties, rankings. 5 EVM chains supported.</p><p class="result">→ Pro features, beginner-friendly</p></div>
+<div class="card"><div class="card-ico">🔒</div><h4>Native SBT Support</h4><p>Toggle SBT mode on for non-transferable NFTs. Certificates, memberships, achievements.</p><p class="result">→ Unlock the SBT category</p></div>
+<div class="card"><div class="card-ico">🖼️</div><h4>IPFS Forever</h4><p>Images & metadata via Pinata IPFS. Immutable, permanent. Your NFTs survive even if we go down.</p><p class="result">→ Your art lives forever</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">💡 Why It Works</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🛡️</div><h4>Security First</h4><p>OpenZeppelin + ReentrancyGuard + Ownable. All contracts verified on Sepolia.</p></div>
+<div class="card"><div class="card-ico">⚡</div><h4>Factory Pattern</h4><p>One Factory manages all deployments. Unified standards, minimal cost.</p></div>
+<div class="card"><div class="card-ico">🌐</div><h4>5 EVM Chains</h4><p>Ethereum / BSC / Polygon / Arbitrum / Avalanche. Free testing on Sepolia.</p></div>
+<div class="card"><div class="card-ico">🎨</div><h4>Built-in Royalties</h4><p>Automatic royalty calculation and distribution. Creator economy, made real.</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🚀 Roadmap</div>
+<div class="roadmap-item"><span class="tag">✅</span><div class="desc">Deploy + Mint + Trade + Auction + Rankings</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V1.5</span><div class="desc">Collection detail page (floor price, volume)</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.0</span><div class="desc">Mainnet deployment (Ethereum Mainnet)</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.5</span><div class="desc">Cross-chain NFT bridging</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V3.0</span><div class="desc">Lazy minting + royalty analytics</div></div>
+</div></div>
+<div class="footer">© 2026 ZenoNFT · NFT Marketplace on Sepolia Testnet</div>
+</div>
+</body></html>

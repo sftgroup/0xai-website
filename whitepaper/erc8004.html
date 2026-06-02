@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ERC-8004 Agent 協定</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans TC',sans-serif;background:#0a0b1e;color:#e4e4e4;font-size:18px;line-height:1.8}
+#content-zh,#content-en{display:none}
+body.show-zh #content-zh{display:block}
+body.show-en #content-en{display:block}
+.container{max-width:1000px;margin:0 auto;padding:0 24px}
+.hero{background:linear-gradient(135deg,#0a0b1e 0%,#4a3010 50%,#0a0b1e 100%);padding:80px 0 60px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid rgba(240,183,42,.15)}
+.hero h1{font-size:3.2em;font-weight:800;background:linear-gradient(135deg,#ffd666,#f0b72a,#ffd666);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.hero .sub{color:#a0aec0;font-size:1.15em}
+.hero .tagline{color:#6b7a9f;font-size:.9em;margin-top:4px}
+.lang-toggle{position:fixed;top:20px;right:24px;z-index:100;display:flex;gap:2px;background:rgba(240,183,42,.12);border:1px solid rgba(240,183,42,.25);border-radius:24px;padding:5px 3px;backdrop-filter:blur(10px)}
+.lang-toggle button{background:transparent;border:none;color:#6b7a9f;padding:5px 16px;border-radius:18px;cursor:pointer;font-size:.85em;transition:all .2s}
+.lang-toggle button.active{background:rgba(240,183,42,.3);color:#ffd666;font-weight:600}
+.badge{display:inline-block;background:rgba(240,183,42,.12);color:#ffd666;border:1px solid rgba(240,183,42,.25);border-radius:20px;padding:5px 18px;font-size:.8em;margin-bottom:18px}
+.section{padding:60px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sec-title{font-size:1.55em;font-weight:700;color:#f0b72a;margin-bottom:32px;text-align:center}
+.pain-block{background:linear-gradient(135deg,rgba(240,183,42,.06),rgba(240,183,42,.01));border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;margin-bottom:18px}
+.pain-block h3{color:#fff;font-size:1.1em;margin-bottom:14px}
+.pain-block .scene{color:#e53e3e;font-size:.95em;padding-left:22px;position:relative;margin-bottom:4px}
+.pain-block .scene::before{content:'❌';position:absolute;left:0}
+.pain-block .solution{color:#ffd666;font-size:.95em;padding-left:22px;position:relative}
+.pain-block .solution::before{content:'✅';position:absolute;left:0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;transition:all .3s}
+.card:hover{border-color:rgba(240,183,42,.3);transform:translateY(-2px)}
+.card-ico{font-size:2em;margin-bottom:10px}
+.card h4{color:#fff;font-size:1.05em;margin-bottom:10px}
+.card p{color:#a0aec0;font-size:.9em;line-height:1.7}
+.card .result{color:#ffd666;font-weight:600;font-size:.85em;margin-top:10px}
+.roadmap-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;background:rgba(255,255,255,.02);border-radius:10px;padding:18px}
+.roadmap-item .tag{background:rgba(240,183,42,.12);color:#ffd666;border-radius:6px;padding:3px 12px;font-size:.8em;white-space:nowrap;flex-shrink:0}
+.roadmap-item .desc{color:#a0aec0;font-size:.9em}
+.footer{text-align:center;padding:36px 0;color:#4a5568;font-size:.85em}
+@media(max-width:768px){body{font-size:16px}.hero h1{font-size:2.2em}.grid-2{grid-template-columns:1fr}.lang-toggle{top:10px;right:10px}.lang-toggle button{padding:4px 12px}}
+</style></head>
+<body class="show-zh">
+
+<div class="lang-toggle">
+<button onclick="switchLang('zh')" id="btn-zh" class="active">繁中</button>
+<button onclick="switchLang('en')" id="btn-en">EN</button>
+</div>
+<script>
+function switchLang(lang) {
+document.body.className = lang === 'zh' ? 'show-zh' : 'show-en';
+document.getElementById('btn-zh').className = lang === 'zh' ? 'active' : '';
+document.getElementById('btn-en').className = lang === 'en' ? 'active' : '';
+}
+</script>
+
+<div id="content-zh">
+<div class="hero"><div class="container">
+<div class="badge">📋 產品白皮書 · V0.1（草案）</div><h1>ERC-8004</h1>
+<div class="sub">去中心化 AI Agent 身分與信譽協定</div>
+<div class="tagline">每個 AI Agent 都應該有一個鏈上身分證</div>
+</div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">😫 你的真實困境</div>
+<div class="pain-block"><h3>🤖 AI Agent 沒有「身分證」</h3><div class="scene">你用 AI Agent 做交易——它是 DeepSeek 還是 GPT 驅動？誰建立的？歷史表現如何？完全沒有標準化鏈上記錄。</div><div class="solution">每個 Agent 擁有唯一鏈上身分 Token（ERC-721），建立者、模型、版本全部記錄，誰都可查驗。</div></div>
+<div class="pain-block"><h3>⭐ 無法評估 Agent 可信度</h3><div class="scene">Agent 說「我幫你賺了 20%」——證據呢？完全靠它自己彙報，沒有鏈上驗證。你敢把大額資金交給它嗎？</div><div class="solution">基於任務完成率、用戶評價、資產表現的多維鏈上信譽評分。分數高低一目瞭然。</div></div>
+<div class="pain-block"><h3>📜 Agent 行為不可審計</h3><div class="scene">Agent 做了一筆交易虧了錢。問「為什麼買」，它說「因為市場訊號」。有證據嗎？沒有。</div><div class="solution">每個關鍵操作鏈上哈希存證，不可篡改、可審計。出了錯可以追溯到具體決策過程。</div></div>
+<div class="pain-block"><h3>🏗️ 不同生態 Agent 無法協作</h3><div class="scene">AItrader 的 Agent 想跟另一條鏈的 Agent 交換資訊——沒有統一身份協議，互不信任、無法溝通。</div><div class="solution">統一身份 + 安全通訊協定標準。Agent 之間可互驗身份、交換資訊、安全協作。</div></div>
+</div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🎯 你能得到的結果</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🆔</div><h4>一眼看出 Agent 底細</h4><p>連接 Agent 時不用問東問西——鏈上身份直接告訴你：什麼模型、誰建立的、版本多少、歷史行為記錄。</p><p class="result">→ Agent 自帶鏈上履歷</p></div>
+<div class="card"><div class="card-ico">⭐</div><h4>信譽比人眼判斷可靠</h4><p>任務完成率、歷史勝率、用戶評分、爭議記錄——多重維度綜合打分。用鏈上資料評估，不是聽它吹。</p><p class="result">→ 用鏈上資料評估，不是聽它吹</p></div>
+<div class="card"><div class="card-ico">📋</div><h4>做過的每件事都可追溯</h4><p>每個關鍵操作鏈上存證。賺錢了能看，虧錢了也能追溯。出了問題可回放決策過程。</p><p class="result">→ 出了事能追溯到具體行為</p></div>
+<div class="card"><div class="card-ico">🔗</div><h4>Agent 組隊幹活</h4><p>統一身份標準。分析師、策略、交易、風控 Agent 各司其職，安全協作。</p><p class="result">→ AI Agent 之間的信任網際網路</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🎯 落地場景</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">💱</div><h4>AI 交易助手</h4><p>在 AItrader 建立 AI Agent，授信額度讓它自動交易。隨時查看鏈上歷史。</p></div>
+<div class="card"><div class="card-ico">🏛️</div><h4>DAO 投票代理</h4><p>將投票權委託給 Agent。根據提案內容和策略自動投票。所有投票鏈上可查。</p></div>
+<div class="card"><div class="card-ico">🛡️</div><h4>鏈上安全監控</h4><p>安全 Agent 持續監控鏈上活動。高信譽 Agent 的警報優先處理。</p></div>
+<div class="card"><div class="card-ico">🤝</div><h4>多 Agent 協作</h4><p>研究→策略→執行→風控，四個 Agent 各司其職，統一身份讓它們安全協作。</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">💡 為什麼有效？</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🛡️</div><h4>身份不可篡改</h4><p>建立時鎖定建立者和模型資訊，鏈上不可修改。防止調包和偽造。</p></div>
+<div class="card"><div class="card-ico">⚖️</div><h4>信譽抗攻擊</h4><p>防刷分、防女巫。信譽基於鏈上任務完成和用戶驗證，不是點讚數。</p></div>
+<div class="card"><div class="card-ico">🔑</div><h4>權限分離</h4><p>Agent 錢包與建立者錢包分離。授權額度隨時可撤銷。</p></div>
+<div class="card"><div class="card-ico">🔄</div><h4>開放協定標準</h4><p>任何專案都可接入 ERC-8004。統一身份 = AI Agent 的信用體系。</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🚀 路線圖</div>
+<div class="roadmap-item"><span class="tag">🔶 V0.1</span><div class="desc">協定設計 + 概念驗證 + 白皮書草案</div></div>
+<div class="roadmap-item"><span class="tag">🔶 V0.5</span><div class="desc">核心合約部署（身份註冊 + 信譽基礎功能）</div></div>
+<div class="roadmap-item"><span class="tag">🔶 V1.0</span><div class="desc">Agent 身份註冊上鏈 + 信譽評分系統上線</div></div>
+<div class="roadmap-item"><span class="tag">🔶 V1.5</span><div class="desc">Agent 間通訊協定 + DAO 投票委託</div></div>
+<div class="roadmap-item"><span class="tag">🔶 V2.0</span><div class="desc">主網部署 + 第三方 API + Agent 市場</div></div>
+</div></div>
+<div class="footer">© 2026 ERC-8004 Agent 協定 · 草案階段</div>
+</div>
+
+<div id="content-en">
+<div class="hero"><div class="container">
+<div class="badge">📋 Technical Whitepaper · V0.1 (Draft)</div><h1>ERC-8004</h1>
+<div class="sub">Decentralized AI Agent Identity & Reputation Protocol</div>
+<div class="tagline">Every Agent Deserves an Identity — Trust, Reputation, Autonomy on Chain</div>
+</div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">😫 Your Real Struggle</div>
+<div class="pain-block"><h3>🤖 Agents Have No Identity</h3><div class="scene">Your AI Agent trades for you — DeepSeek or GPT? Who built it? Track record? Zero standardized on-chain records.</div><div class="solution">Every Agent gets a unique on-chain identity (ERC-721). Creator, model, version — all verifiable.</div></div>
+<div class="pain-block"><h3>⭐ No Reputation System</h3><div class="scene">"I made you 20% profit" — self-reported with zero proof. Would you trust it with serious capital?</div><div class="solution">Multi-dimensional on-chain reputation: completion rate, ratings, asset performance. Data, not promises.</div></div>
+<div class="pain-block"><h3>📜 No Audit Trail</h3><div class="scene">Agent loses money. "Why?" — "Market signals." Any proof? None. Would you keep trusting it?</div><div class="solution">Every action: on-chain hash proof. Immutable, auditable. Trace every decision when things go wrong.</div></div>
+<div class="pain-block"><h3>🏗️ No Interoperability</h3><div class="scene">AItrader Agent tries to talk to another chain's Agent. No shared identity = no trust = no collaboration.</div><div class="solution">Standardized identity + secure communication. Agents verify, talk, and collaborate across ecosystems.</div></div>
+</div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🎯 What You Get</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🆔</div><h4>See Agent's Resume</h4><p>Connect an agent and instantly see its on-chain résumé: model, creator, version, all past actions.</p><p class="result">→ Agent carries its own on-chain resume</p></div>
+<div class="card"><div class="card-ico">⭐</div><h4>Trust = Data</h4><p>Task completion, win rate, ratings, disputes — multi-dimensional scoring. Verify with data, not promises.</p><p class="result">→ Verify with data, not promises</p></div>
+<div class="card"><div class="card-ico">📋</div><h4>Full Traceability</h4><p>Every action hash-verified. Profits visible, losses traceable. Replay decisions when needed.</p><p class="result">→ Accountability — on chain, forever</p></div>
+<div class="card"><div class="card-ico">🔗</div><h4>Multi-Agent Teams</h4><p>Unified identity. Research + Strategy + Trade + Risk agents — each specialized, collaborating securely.</p><p class="result">→ The Internet of Trust for AI Agents</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🎯 Real-World Use Cases</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">💱</div><h4>AI Trading Assistant</h4><p>Create an AI Agent in AItrader, fund it, let it trade. Check on-chain history anytime.</p></div>
+<div class="card"><div class="card-ico">🏛️</div><h4>DAO Voting Agent</h4><p>Delegate votes to an Agent. Auto-votes based on proposals. All votes on-chain, transparent.</p></div>
+<div class="card"><div class="card-ico">🛡️</div><h4>On-Chain Security</h4><p>Security Agents monitor on-chain activity. High-reputation alerts get priority.</p></div>
+<div class="card"><div class="card-ico">🤝</div><h4>Multi-Agent Teams</h4><p>Research → Strategy → Execution → Risk — four agents, one team, seamless collaboration.</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">💡 Why It Works</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🛡️</div><h4>Immutable Identity</h4><p>Creator & model locked at creation. No tampering, no impersonation.</p></div>
+<div class="card"><div class="card-ico">⚖️</div><h4>Sybil-Resistant</h4><p>Anti-sybil, anti-gaming. Built on on-chain task verification, not popularity.</p></div>
+<div class="card"><div class="card-ico">🔑</div><h4>Separated Authority</h4><p>Agent wallet ≠ creator wallet. Revocable permissions.</p></div>
+<div class="card"><div class="card-ico">🔄</div><h4>Open Standard</h4><p>Any project can adopt ERC-8004. Unified identity = credit system for AI Agents.</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🚀 Roadmap</div>
+<div class="roadmap-item"><span class="tag">🔶 V0.1</span><div class="desc">Protocol design + PoC + Whitepaper draft</div></div>
+<div class="roadmap-item"><span class="tag">🔶 V0.5</span><div class="desc">Core contracts: identity registration + basic reputation</div></div>
+<div class="roadmap-item"><span class="tag">🔶 V1.0</span><div class="desc">Agent identity on-chain + reputation scoring live</div></div>
+<div class="roadmap-item"><span class="tag">🔶 V1.5</span><div class="desc">Inter-agent communication + DAO voting delegation</div></div>
+<div class="roadmap-item"><span class="tag">🔶 V2.0</span><div class="desc">Mainnet + 3rd party API + Agent marketplace</div></div>
+</div></div>
+<div class="footer">© 2026 ERC-8004 Agent Protocol · Draft Stage</div>
+</div>
+</body></html>

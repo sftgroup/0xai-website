@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ceres — 去中心化社交關係網路</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans TC',sans-serif;background:#0a0b1e;color:#e4e4e4;font-size:18px;line-height:1.8}
+#content-zh,#content-en{display:none}
+body.show-zh #content-zh{display:block}
+body.show-en #content-en{display:block}
+.container{max-width:1000px;margin:0 auto;padding:0 24px}
+.hero{background:linear-gradient(135deg,#0a0b1e 0%,#2d1b69 50%,#0a0b1e 100%);padding:80px 0 60px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid rgba(130,80,255,.15)}
+.hero h1{font-size:3.2em;font-weight:800;background:linear-gradient(135deg,#b388ff,#7c4dff,#b388ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.hero .sub{color:#a0aec0;font-size:1.15em}
+.hero .tagline{color:#6b7a9f;font-size:.9em;margin-top:4px}
+.lang-toggle{position:fixed;top:20px;right:24px;z-index:100;display:flex;gap:2px;background:rgba(130,80,255,.12);border:1px solid rgba(130,80,255,.25);border-radius:24px;padding:5px 3px;backdrop-filter:blur(10px)}
+.lang-toggle button{background:transparent;border:none;color:#6b7a9f;padding:5px 16px;border-radius:18px;cursor:pointer;font-size:.85em;transition:all .2s}
+.lang-toggle button.active{background:rgba(130,80,255,.3);color:#b388ff;font-weight:600}
+.badge{display:inline-block;background:rgba(130,80,255,.12);color:#b388ff;border:1px solid rgba(130,80,255,.25);border-radius:20px;padding:5px 18px;font-size:.8em;margin-bottom:18px}
+.section{padding:60px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sec-title{font-size:1.55em;font-weight:700;color:#7c4dff;margin-bottom:32px;text-align:center}
+.pain-block{background:linear-gradient(135deg,rgba(130,80,255,.06),rgba(130,80,255,.01));border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;margin-bottom:18px}
+.pain-block h3{color:#fff;font-size:1.1em;margin-bottom:14px}
+.pain-block .scene{color:#e53e3e;font-size:.95em;padding-left:22px;position:relative;margin-bottom:4px}
+.pain-block .scene::before{content:'❌';position:absolute;left:0}
+.pain-block .solution{color:#b388ff;font-size:.95em;padding-left:22px;position:relative}
+.pain-block .solution::before{content:'✅';position:absolute;left:0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;transition:all .3s}
+.card:hover{border-color:rgba(130,80,255,.3);transform:translateY(-2px)}
+.card-ico{font-size:2em;margin-bottom:10px}
+.card h4{color:#fff;font-size:1.05em;margin-bottom:10px}
+.card p{color:#a0aec0;font-size:.9em;line-height:1.7}
+.card .result{color:#b388ff;font-weight:600;font-size:.85em;margin-top:10px}
+.stat-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin:36px 0}
+.stat-item{text-align:center;padding:24px 28px;background:rgba(130,80,255,.05);border-radius:12px;border:1px solid rgba(130,80,255,.1);min-width:130px}
+.stat-num{font-size:2em;font-weight:800;color:#b388ff}
+.stat-label{font-size:.8em;color:#6b7a9f;margin-top:4px}
+.roadmap-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;background:rgba(255,255,255,.02);border-radius:10px;padding:18px}
+.roadmap-item .tag{background:rgba(130,80,255,.12);color:#b388ff;border-radius:6px;padding:3px 12px;font-size:.8em;white-space:nowrap;flex-shrink:0}
+.roadmap-item .desc{color:#a0aec0;font-size:.9em}
+.footer{text-align:center;padding:36px 0;color:#4a5568;font-size:.85em}
+@media(max-width:768px){body{font-size:16px}.hero h1{font-size:2.2em}.grid-2{grid-template-columns:1fr}.lang-toggle{top:10px;right:10px}.lang-toggle button{padding:4px 12px}}
+</style></head>
+<body class="show-zh">
+
+<div class="lang-toggle">
+<button onclick="switchLang('zh')" id="btn-zh" class="active">繁中</button>
+<button onclick="switchLang('en')" id="btn-en">EN</button>
+</div>
+<script>
+function switchLang(lang) {
+document.body.className = lang === 'zh' ? 'show-zh' : 'show-en';
+document.getElementById('btn-zh').className = lang === 'zh' ? 'active' : '';
+document.getElementById('btn-en').className = lang === 'en' ? 'active' : '';
+}
+</script>
+
+<div id="content-zh">
+<div class="hero"><div class="container">
+<div class="badge">📋 產品白皮書 · V1.0</div><h1>Ceres</h1>
+<div class="sub">去中心化社交關係網路</div>
+<div class="tagline">鑄造你的鏈上身分，讓社交資產屬於你，而不是平台</div>
+</div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">😫 你的真實困境</div>
+<div class="pain-block"><h3>🔒 身分碎片化</h3>
+<div class="scene">每個平台一個帳號：Twitter、Discord、微信、Line……你的數位身分散在無數中心化伺服器裡。</div>
+<div class="solution">一個 Ceres DID 等於你在 Web3 的唯一身分證。所有 dApp 只需連接錢包，跨平台身分統一。</div></div>
+<div class="pain-block"><h3>📉 社交資產不可帶走</h3>
+<div class="scene">在 Twitter 累積 1 萬粉絲，換平台歸零。你的社交關係是平台的資產，不是你的。</div>
+<div class="solution">邀請關係鏈上永存，你的社交圖譜跟著你走。每個 dApp 都能讀取你的 Ceres 社交網路。</div></div>
+<div class="pain-block"><h3>🕵️ 資料被平台賣錢</h3>
+<div class="scene">平台用你的資料訓練演算法、投放廣告，賺得盆滿缽滿。你貢獻了內容和關係，卻分不到半毛錢。</div>
+<div class="solution">你的鏈上檔案自己控制、鏈上儲存。去中心化，沒有中間商抽成。</div></div>
+<div class="pain-block"><h3>🚫 分不清誰是真的</h3>
+<div class="scene">Web3 裡到處是機器人、女巫帳號、冒名頂替。你合作的 KOL 是真的還是套皮的機器人？</div>
+<div class="solution">一個地址只能有一個 DID。邀請鏈可追溯到創世節點，鏈上等級體系讓真偽一目瞭然。</div></div>
+<div class="stat-row">
+<div class="stat-item"><div class="stat-num">1</div><div class="stat-label">地址唯一 DID</div></div>
+<div class="stat-item"><div class="stat-num">6</div><div class="stat-label">等級體系</div></div>
+<div class="stat-item"><div class="stat-num">ERC-721</div><div class="stat-label">身分標準</div></div>
+<div class="stat-item"><div class="stat-num">Sepolia</div><div class="stat-label">當前網路</div></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🎯 你能得到的結果</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🆔</div><h4>一個身分走遍所有 dApp</h4><p>鑄造 Ceres DID 後，每次連接錢包對方就知道「這是你」。不用反覆註冊。一次鑄造，永續使用。</p><p class="result">→ 一次鑄造，永續使用</p></div>
+<div class="card"><div class="card-ico">🔗</div><h4>社交網路你說了算</h4><p>邀請關係鏈從創世到你的所有後代，全部鏈上記錄。不是你需要平台，而是平台需要你的社交資產。</p><p class="result">→ 社交資本自由遷移</p></div>
+<div class="card"><div class="card-ico">🏆</div><h4>影響力被量化、被看見</h4><p>6 級等級體系，從 Seed 到 Diamond，全網透明。社區地位由真實社交貢獻決定。</p><p class="result">→ 貢獻有了鏈上「工資單」</p></div>
+<div class="card"><div class="card-ico">📝</div><h4>鏈上檔案永續存在</h4><p>姓名、簡介、頭像、社交連結全部鏈上儲存。平台可以刪你的貼文，但刪不了你的鏈上檔案。</p><p class="result">→ 數位身分誰也刪不掉</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">💡 為什麼有效？</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🛡️</div><h4>OpenZeppelin 安全標準</h4><p>ERC-721 + Ownable，經過社群審計。你的 DID 擁有最高級別的安全保障。</p></div>
+<div class="card"><div class="card-ico">🧱</div><h4>不可篡改、不可刪除</h4><p>鏈上儲存意味著一旦記錄就永續存在。即使 Ceres 前端下線，DID 仍在鏈上。</p></div>
+<div class="card"><div class="card-ico">💸</div><h4>Gas 極低</h4><p>單次鑄造約 120k Gas，邀請關係增量更新，鏈上計算開銷最小化。</p></div>
+<div class="card"><div class="card-ico">🎯</div><h4>唯一性保障</h4><p>Registry 是唯一鑄造入口。一個地址只能有一個 DID，防女巫、防重複註冊。</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🚀 路線圖</div>
+<div class="roadmap-item"><span class="tag">✅</span><div class="desc">鑄造 DID + 個人檔案 + 邀請體系 + 等級展示</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V1.5</span><div class="desc">社交圖譜視覺化</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.0</span><div class="desc">DID 徽章系統（鏈上憑證 + 成就體系）</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.5</span><div class="desc">跨鏈 DID（橋接到其他鏈）</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V3.0</span><div class="desc">Ceres DAO 治理（DID 持有者參與投票）</div></div>
+</div></div>
+<div class="footer">© 2026 Ceres · 去中心化社交關係網路 · Sepolia Testnet</div>
+</div>
+
+<div id="content-en">
+<div class="hero"><div class="container">
+<div class="badge">📋 Technical Whitepaper · V1.0</div><h1>Ceres</h1>
+<div class="sub">Decentralized Social Relationship Network</div>
+<div class="tagline">Mint Your Identity — Build Your On-Chain Social Graph</div>
+</div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">😫 Your Real Struggle</div>
+<div class="pain-block"><h3>🔒 Identity Fragmentation</h3><div class="scene">Twitter, Discord, WeChat, Line — your identity is scattered across centralized servers. Switch platforms? Start from zero.</div><div class="solution">One Ceres DID = your universal Web3 identity. Connect your wallet, your identity follows everywhere.</div></div>
+<div class="pain-block"><h3>📉 Social Assets Locked</h3><div class="scene">10K followers on Twitter? Switch platforms and it's zero. Your social graph is the platform's asset.</div><div class="solution">Invitation chain lives on-chain forever. Your social graph follows you to any dApp.</div></div>
+<div class="pain-block"><h3>🕵️ Your Data, Their Profit</h3><div class="scene">Platforms train algorithms and sell ads with your data. You create — they profit.</div><div class="solution">Your on-chain profile: you control it, the chain stores it. Decentralized, no middleman.</div></div>
+<div class="pain-block"><h3>🚫 Who's Real?</h3><div class="scene">Bots, sybils, impersonators everywhere. Is that KOL real or a bot in disguise?</div><div class="solution">One address = one DID. Invitation chain traces to genesis. On-chain rank separates real users from sybils.</div></div>
+<div class="stat-row">
+<div class="stat-item"><div class="stat-num">1</div><div class="stat-label">One DID Per Address</div></div>
+<div class="stat-item"><div class="stat-num">6</div><div class="stat-label">Rank Levels</div></div>
+<div class="stat-item"><div class="stat-num">ERC-721</div><div class="stat-label">Identity Standard</div></div>
+<div class="stat-item"><div class="stat-num">Sepolia</div><div class="stat-label">Network</div></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🎯 What You Get</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🆔</div><h4>One ID for All dApps</h4><p>Mint Ceres DID once. Every dApp knows it's you. No more registration or KYC.</p><p class="result">→ Mint once, use forever</p></div>
+<div class="card"><div class="card-ico">🔗</div><h4>Your Graph, Your Rules</h4><p>Your invitation chain, from genesis to descendants — all on-chain. Platforms need your graph.</p><p class="result">→ Portable social capital</p></div>
+<div class="card"><div class="card-ico">🏆</div><h4>Influence, Quantified</h4><p>6 rank levels, Seed → Diamond, fully transparent. Your community status = your real contributions.</p><p class="result">→ Your impact, on the record</p></div>
+<div class="card"><div class="card-ico">📝</div><h4>Permanent Profile</h4><p>Name, bio, avatar, social links — all on-chain. Platforms can delete your posts, but not your identity.</p><p class="result">→ Your digital identity, yours forever</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">💡 Why It Works</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🛡️</div><h4>Battle-Tested Security</h4><p>ERC-721 + Ownable, community-audited. Your DID has top-tier security.</p></div>
+<div class="card"><div class="card-ico">🧱</div><h4>Immutable & Permanent</h4><p>On-chain = forever. Even if Ceres frontend goes down, your DID remains on-chain.</p></div>
+<div class="card"><div class="card-ico">💸</div><h4>Low Gas Cost</h4><p>~120k gas per mint. Incremental invitation updates minimize on-chain costs.</p></div>
+<div class="card"><div class="card-ico">🎯</div><h4>Uniqueness Guaranteed</h4><p>Registry is the sole minting entry. One address = one DID. No sybils, no duplicates.</p></div>
+</div></div></div>
+
+<div class="section"><div class="container">
+<div class="sec-title">🚀 Roadmap</div>
+<div class="roadmap-item"><span class="tag">✅</span><div class="desc">DID minting + Profile + Invitation + Rank display</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V1.5</span><div class="desc">Social graph visualization</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.0</span><div class="desc">DID badge system — credentials + achievements</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.5</span><div class="desc">Cross-chain DID bridging</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V3.0</span><div class="desc">Ceres DAO — DID holders govern the protocol</div></div>
+</div></div>
+<div class="footer">© 2026 Ceres · Decentralized Social Relationship Network · Sepolia Testnet</div>
+</div>
+</body></html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AItrader — AI 量化交易操作系统</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans TC',sans-serif;background:#0a0b1e;color:#e4e4e4;font-size:18px;line-height:1.8}
+#content-zh,#content-en{display:none}
+body.show-zh #content-zh{display:block}
+body.show-en #content-en{display:block}
+.container{max-width:1000px;margin:0 auto;padding:0 24px}
+.hero{background:linear-gradient(135deg,#0a0b1e 0%,#132166 50%,#0a0b1e 100%);padding:80px 0 60px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid rgba(22,119,255,.15)}
+.hero h1{font-size:3.2em;font-weight:800;background:linear-gradient(135deg,#4dabf7,#1677ff,#69dbff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;letter-spacing:-1px}
+.hero .sub{color:#a0aec0;font-size:1.15em}
+.hero .tagline{color:#6b7a9f;font-size:.9em;margin-top:4px}
+.lang-toggle{position:fixed;top:20px;right:24px;z-index:100;display:flex;gap:2px;background:rgba(22,119,255,.12);border:1px solid rgba(22,119,255,.25);border-radius:24px;padding:5px 3px;backdrop-filter:blur(10px)}
+.lang-toggle button{background:transparent;border:none;color:#6b7a9f;padding:5px 16px;border-radius:18px;cursor:pointer;font-size:.85em;transition:all .2s}
+.lang-toggle button.active{background:rgba(22,119,255,.3);color:#4dabf7;font-weight:600}
+.badge{display:inline-block;background:rgba(22,119,255,.12);color:#4dabf7;border:1px solid rgba(22,119,255,.25);border-radius:20px;padding:5px 18px;font-size:.8em;margin-bottom:18px}
+.section{padding:60px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sec-title{font-size:1.55em;font-weight:700;color:#1677ff;margin-bottom:32px;text-align:center}
+.pain-block{background:linear-gradient(135deg,rgba(22,119,255,.06),rgba(22,119,255,.01));border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;margin-bottom:18px}
+.pain-block h3{color:#fff;font-size:1.1em;margin-bottom:14px}
+.pain-block .scene{color:#e53e3e;font-size:.95em;padding-left:22px;position:relative;margin-bottom:4px}
+.pain-block .scene::before{content:'❌';position:absolute;left:0}
+.pain-block .solution{color:#4dabf7;font-size:.95em;padding-left:22px;position:relative}
+.pain-block .solution::before{content:'✅';position:absolute;left:0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;transition:all .3s}
+.card:hover{border-color:rgba(22,119,255,.3);transform:translateY(-2px)}
+.card-ico{font-size:2em;margin-bottom:10px}
+.card h4{color:#fff;font-size:1.05em;margin-bottom:10px}
+.card p{color:#a0aec0;font-size:.9em;line-height:1.7}
+.card .result{color:#4dabf7;font-weight:600;font-size:.85em;margin-top:10px}
+.stat-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin:36px 0}
+.stat-item{text-align:center;padding:24px 28px;background:rgba(22,119,255,.05);border-radius:12px;border:1px solid rgba(22,119,255,.1);min-width:130px}
+.stat-num{font-size:2em;font-weight:800;color:#4dabf7}
+.stat-label{font-size:.8em;color:#6b7a9f;margin-top:4px}
+.roadmap-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;background:rgba(255,255,255,.02);border-radius:10px;padding:18px}
+.roadmap-item .tag{background:rgba(22,119,255,.12);color:#4dabf7;border-radius:6px;padding:3px 12px;font-size:.8em;white-space:nowrap;flex-shrink:0}
+.roadmap-item .desc{color:#a0aec0;font-size:.9em}
+.footer{text-align:center;padding:36px 0;color:#4a5568;font-size:.85em}
+@media(max-width:768px){body{font-size:16px}.hero h1{font-size:2.2em}.grid-2{grid-template-columns:1fr}.lang-toggle{top:10px;right:10px}.lang-toggle button{padding:4px 12px;font-size:.8em}}
+</style>
+</head>
+<body class="show-zh">
+
+<div class="lang-toggle">
+<button onclick="switchLang('zh')" id="btn-zh" class="active">繁中</button>
+<button onclick="switchLang('en')" id="btn-en">EN</button>
+</div>
+
+<script>
+function switchLang(lang) {
+document.body.className = lang === 'zh' ? 'show-zh' : 'show-en';
+document.getElementById('btn-zh').className = lang === 'zh' ? 'active' : '';
+document.getElementById('btn-en').className = lang === 'en' ? 'active' : '';
+}
+</script>
+
+<div id="content-zh">
+
+<div class="hero">
+<div class="container">
+<div class="badge">📋 產品白皮書 · V1.0</div>
+<h1>AItrader</h1>
+<div class="sub">AI 量化交易作業系統</div>
+<div class="tagline">讓每個投資者，都擁有頂級量化團隊的 AI 能力</div>
+</div></div>
+
+<div class="section">
+<div class="container">
+<div class="sec-title">😫 你的真實困境</div>
+<div class="pain-block">
+<h3>📰 資訊過載，無從下手</h3>
+<div class="scene">每天花 2 小時刷新聞、看行情，還是不知道該買還是該賣。</div>
+<div class="solution">AI 自動抓取、解讀新聞和情緒指數，3 個 LLM 同時研判，給你一份綜合買賣建議。</div>
+</div>
+<div class="pain-block">
+<h3>🛠️ 量化門檻太高</h3>
+<div class="scene">想學量化交易，發現要會 Python、懂金融、會搭回測。學了大半年還在入門。</div>
+<div class="solution">線上策略 IDE + 拖曳指標 + 一鍵回測 + 自動參數最佳化。你只需要想清楚方向。</div>
+</div>
+<div class="pain-block">
+<h3>🤖 AI 分析各自為政</h3>
+<div class="scene">DeepSeek 看多，GPT 看空，Claude 說震盪。你信誰的？單一模型可能出錯。</div>
+<div class="solution">3 個模型同時分析同一市場，輸出綜合研判 + 分歧標記，不再左右為難。</div>
+</div>
+<div class="pain-block">
+<h3>📱 桌面行動體驗斷層</h3>
+<div class="scene">電腦做深度分析，路上想看行情只能用手機。兩個平台功能不一致。</div>
+<div class="solution">一套帳戶兩端同步。桌面版深度分析 + 行動版 30+ 頁面全功能覆蓋。</div>
+</div>
+<div class="stat-row">
+<div class="stat-item"><div class="stat-num">10+</div><div class="stat-label">全球指數覆蓋</div></div>
+<div class="stat-item"><div class="stat-num">3</div><div class="stat-label">AI 聯合研判</div></div>
+<div class="stat-item"><div class="stat-num">30+</div><div class="stat-label">行動頁面</div></div>
+<div class="stat-item"><div class="stat-num">5</div><div class="stat-label">語言支援</div></div>
+</div>
+</div></div>
+
+<div class="section">
+<div class="container">
+<div class="sec-title">🎯 你能得到的結果</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🌐</div><h4>全球市場盡在掌握</h4><p>美股、歐股、日股、VIX、DXY、恐貪指數——所有關鍵市場一個頁面。三級降級架構確保永不斷供。</p><p class="result">→ 不再錯過任何關鍵市場訊號</p></div>
+<div class="card"><div class="card-ico">🤖</div><h4>AI 代你研究</h4><p>DeepSeek 分析基本面 → GPT 做情緒評估 → Claude 盯技術指標。3 模型交叉驗證，給你最終多空建議。</p><p class="result">→ 一個人擁有 3 個分析師</p></div>
+<div class="card"><div class="card-ico">✍️</div><h4>策略即寫即驗</h4><p>線上寫策略 → 拖曳指標 → 一鍵回測 → 自動最佳化參數。從想到驗證只要幾分鐘。</p><p class="result">→ 把直覺變成交易演算法</p></div>
+<div class="card"><div class="card-ico">📱</div><h4>隨時隨地交易</h4><p>上班路上看行情 → 午休 AI 分析 → 回家深度研究。30+ 行動頁面，功能與桌面一致。</p><p class="result">→ 當別人找電腦你已經下單</p></div>
+</div></div></div>
+
+<div class="section">
+<div class="container">
+<div class="sec-title">💡 為什麼有效？</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🗂️</div><h4>資料永不中斷</h4><p>三級降級架構：即時源 → 備用源 → 本地快取。任何資料源掛了，系統無縫切換。</p></div>
+<div class="card"><div class="card-ico">🧠</div><h4>多模型交叉驗證</h4><p>不同 AI 各有偏好。讓它們同時分析、取交集、看分歧，比依賴單一模型可靠得多。</p></div>
+<div class="card"><div class="card-ico">⚡</div><h4>專業級基礎設施</h4><p>Docker 容器化、HTTPS TLS 1.3 加密、JWT API 鑑權、PostgreSQL + Redis 快取。</p></div>
+<div class="card"><div class="card-ico">🌍</div><h4>全語言覆蓋</h4><p>支援 5 種語言：繁體中文、英文、日文、韓文、馬來文。全球用戶都能使用。</p></div>
+</div></div></div>
+
+<div class="section">
+<div class="container">
+<div class="sec-title">🚀 路線圖</div>
+<div class="roadmap-item"><span class="tag">✅</span><div class="desc">全球市場 + AI 分析 + 行動/桌面端 + Docker 部署已上線</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V1.5</span><div class="desc">自然語言生成策略：說句話就產生策略程式碼</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V1.7</span><div class="desc">回測結果視覺化 + 風險分析報告</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.0</span><div class="desc">多資料源聚合 + 社交交易複製</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.5</span><div class="desc">AI Agent 自主交易：研究→策略→執行全自動</div></div>
+</div></div>
+
+<div class="footer">© 2026 AItrader · AI 量化交易作業系統</div>
+</div>
+
+<div id="content-en">
+
+<div class="hero">
+<div class="container">
+<div class="badge">📋 Technical Whitepaper · V1.0</div>
+<h1>AItrader</h1>
+<div class="sub">AI Quant Trading OS</div>
+<div class="tagline">Every investor deserves a quant team's AI power</div>
+</div></div>
+
+<div class="section">
+<div class="container">
+<div class="sec-title">😫 Your Real Struggle</div>
+<div class="pain-block">
+<h3>📰 Information Overload</h3>
+<div class="scene">Hours reading news and charts, yet no idea what to do. More data, harder decisions.</div>
+<div class="solution">AI auto-fetches news + sentiment, 3 LLMs cross-validate, delivers one clear recommendation.</div>
+</div>
+<div class="pain-block">
+<h3>🛠️ Quant Is Too Hard</h3>
+<div class="scene">Learning quant means Python + finance + backtesting. Months in and still at square one.</div>
+<div class="solution">Online strategy IDE + drag-drop indicators + one-click backtesting + auto optimization.</div>
+</div>
+<div class="pain-block">
+<h3>🤖 AI Models Disagree</h3>
+<div class="scene">DeepSeek says buy, GPT says sell, Claude says hold. Single model bias, no cross-validation.</div>
+<div class="solution">3 models analyze the same market → unified verdict + divergence highlights.</div>
+</div>
+<div class="pain-block">
+<h3>📱 Fragmented Experience</h3>
+<div class="scene">Desktop for deep work, phone for quick checks. Two platforms, two experiences.</div>
+<div class="solution">One account, both devices. Desktop depth + mobile 30+ full-featured pages.</div>
+</div>
+<div class="stat-row">
+<div class="stat-item"><div class="stat-num">10+</div><div class="stat-label">Global Indices</div></div>
+<div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Multi-LLM Analysis</div></div>
+<div class="stat-item"><div class="stat-num">30+</div><div class="stat-label">Mobile Pages</div></div>
+<div class="stat-item"><div class="stat-num">5</div><div class="stat-label">Languages</div></div>
+</div></div></div>
+
+<div class="section">
+<div class="container">
+<div class="sec-title">🎯 What You Get</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🌐</div><h4>Global Markets at a Glance</h4><p>US, EU, Japan, VIX, DXY, Fear & Greed — all key markets, one screen. 3-tier failover ensures 100% uptime.</p><p class="result">→ Never miss a market signal</p></div>
+<div class="card"><div class="card-ico">🤖</div><h4>AI Does the Research</h4><p>DeepSeek for fundamentals → GPT for sentiment → Claude for technicals. 3-model cross-validation.</p><p class="result">→ Your personal analyst team</p></div>
+<div class="card"><div class="card-ico">✍️</div><h4>Write & Verify Instantly</h4><p>Write strategies → drag indicators → backtest → auto-optimize. From idea to data in minutes.</p><p class="result">→ Turn instinct into algorithms</p></div>
+<div class="card"><div class="card-ico">📱</div><h4>Trade Anywhere</h4><p>Morning commute → check markets. Lunch break → AI analysis. Home → deep research.</p><p class="result">→ Trade before others find a desk</p></div>
+</div></div></div>
+
+<div class="section">
+<div class="container">
+<div class="sec-title">💡 Why It Works</div>
+<div class="grid-2">
+<div class="card"><div class="card-ico">🗂️</div><h4>Never Down</h4><p>3-tier: Live source → Backup → Cache. Any source fails, system auto-switches seamlessly.</p></div>
+<div class="card"><div class="card-ico">🧠</div><h4>Cross-Validation</h4><p>Different AIs have different biases. Analyze together, find intersection — far more reliable.</p></div>
+<div class="card"><div class="card-ico">⚡</div><h4>Pro-Grade Infrastructure</h4><p>Docker containerization, HTTPS TLS 1.3, JWT API auth, PostgreSQL + Redis cache.</p></div>
+<div class="card"><div class="card-ico">🌍</div><h4>Full Language Support</h4><p>5 languages: Traditional Chinese, English, Japanese, Korean, Malay. For users worldwide.</p></div>
+</div></div></div>
+
+<div class="section">
+<div class="container">
+<div class="sec-title">🚀 Roadmap</div>
+<div class="roadmap-item"><span class="tag">✅</span><div class="desc">Global markets + Multi-LLM + Mobile/Desktop + Docker — live</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V1.5</span><div class="desc">Natural language → strategy code. Just say it.</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V1.7</span><div class="desc">Backtest visualization + risk analysis reports</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.0</span><div class="desc">Multi-source aggregation + social trading copy</div></div>
+<div class="roadmap-item"><span class="tag">🔷 V2.5</span><div class="desc">Autonomous AI Agent: research → strategy → execution</div></div>
+</div></div>
+
+<div class="footer">© 2026 AItrader · AI Quant Trading OS</div>
+</div>
+
+</body>
+</html>
